@@ -1,0 +1,30 @@
+2026-07-06 18:05:01,285 | INFO | spark_session | Creating Spark session
+2026-07-06 18:05:09,779 | INFO | pipeline | Processing file: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-06 18:05:09,779 | INFO | readers | Reading Excel file: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-06 18:05:12,478 | INFO | pipeline | Processing file: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-06 18:05:12,479 | INFO | readers | Reading Excel file: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-06 18:05:12,791 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 18:14:52,733 | INFO | spark_session | Creating Spark session
+2026-07-06 18:15:00,479 | INFO | pipeline | Processing file: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-06 18:15:00,479 | INFO | readers | Reading Excel file: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-06 18:15:03,288 | INFO | pipeline | Processing file: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-06 18:15:03,288 | INFO | readers | Reading Excel file: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-06 18:15:03,580 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 18:29:40,176 | INFO | spark_session | Creating Spark session
+2026-07-06 18:29:47,594 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 18:30:32,197 | INFO | spark_session | Creating Spark session
+2026-07-06 18:30:39,449 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 18:31:39,391 | INFO | spark_session | Creating Spark session
+2026-07-06 18:31:46,456 | INFO | readers | Reading Excel file: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-06 18:31:47,791 | INFO | readers | Reading Excel file: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-06 18:31:48,986 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 18:33:59,320 | INFO | spark_session | Creating Spark session
+2026-07-06 18:34:06,356 | INFO | readers | Reading Excel file: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-06 18:34:07,629 | INFO | readers | Reading Excel file: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-06 18:34:09,070 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 18:34:53,849 | INFO | spark_session | Creating Spark session
+2026-07-06 18:35:00,973 | INFO | readers | Reading Excel file: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-06 18:35:02,324 | INFO | readers | Reading Excel file: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-06 18:35:02,466 | INFO | readers | Reading JSON file: ../storage/raw/serie_11.json
+2026-07-06 18:35:02,783 | INFO | readers | Reading JSON file: ../storage/raw/serie_433.json
+2026-07-06 18:35:03,982 | INFO | py4j.clientserver | Closing down clientserver connection

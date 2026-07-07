@@ -1,8 +1,10 @@
+from jobs.job_bronze import JobBrozeData
 from jobs.job_raw import JobRawData
 from logging_config import configure_logging
 from pipeline import Pipeline
 
 configure_logging("INFO")
+
 
 payload = {
     "ipca": {
@@ -56,45 +58,26 @@ payload = {
         "path_gold": "../storage/gold/inmet/franca/inmet_franca.parquet",
     },
 }
+def main() -> None:
+    """Ponto de entrada principal da pipeline."""
+    run = Pipeline()
+
+    # Exemplo para baixar os dados do Banco Central (SELIC e IPCA)
+    # run.download_tax_series(
+    #     code=payload["selic"]["COD_SELIC"],
+    #     start_date=payload["selic"]["start_date"],
+    #     end_date=payload["selic"]["end_date"],
+    #     output_path=payload["selic"]["path_raw"],
+    # )
+
+    # Exemplo de execução do fluxo raw
+    job_raw = JobRawData(payload=payload, run=run)
+    job_raw.run_jobs()
+
+    # # Exemplo de execução do fluxo bronze
+    # job_bronze = JobBrozeData(payload=payload, run=run)
+    # job_bronze.job_ipca(payload=payload)
+
+
 if __name__ == "__main__":
-    job_raw = JobRawData(payload=payload, run=Pipeline())
-    # job_raw.run_jobs()
-
-    # run = Pipeline()
-
-    # Realiza o donwload com base na série de códigos do Banco Central
-    # run.download_tax_series(
-    #     code=payload["data"].get("COD_SELIC"),
-    #     start_date=payload["data"].get("start_date"),
-    #     end_date=payload["data"].get("end_date"),
-    # )
-    # run.download_tax_series(
-    #     code=payload["data"].get("COD_IPCA"),
-    #     start_date=payload["data"].get("start_date"),
-    #     end_date=payload["data"].get("end_date"),
-    # )
-    # df_row_robusta = run.create_dataframe(
-    #     path=payload["path_raw"].get("path_robusta"),
-    #     sheet_name=payload["path_raw"].get("sheet_name"),
-    # )
-    # df_row_arabica = run.create_dataframe(
-    #     path=payload["path_raw"].get("path_arabica"),
-    #     sheet_name=payload["path_raw"].get("sheet_name"),
-    # )
-    # df_row_arabica.show(2, truncate=False)
-
-    # df_row_selic = run.create_dataframe(
-    #     path=payload["path_raw"].get("path_selic")
-    # )
-    # df_row_ipca = run.create_dataframe(
-    #     path=payload["path_raw"].get("path_ipca")
-    # )
-
-    # df_row_ipca = run.create_dataframe(
-    #     path=payload["path_raw"].get("path_ipca")
-    # )
-
-    # df_row_inmet_patrocinio = run.create_dataframe(
-    #     path=payload["path_raw"].get("path_inmet_patrocinio"),
-    # )
-    # df_row_inmet_patrocinio.show(20, truncate=False)
+    main()

@@ -68,24 +68,21 @@ class DataReaderFactory:
     """Fábrica para criar leitores de dados com base na extensão do arquivo."""
 
     @staticmethod
-    def create(path: str, spark: SparkSession | None = None) -> DataReader:
+    def resolve_reader_class(path: str) -> type[DataReader]:
+        """Retorna a classe do leitor compatível com o arquivo informado."""
         suffix = Path(path).suffix.lower()
         if suffix == ".xls":
-            return (
-                ExcelDataReader(spark)
-                if spark is not None
-                else ExcelDataReader.__new__(ExcelDataReader)
-            )
+            return ExcelDataReader
         if suffix == ".json":
-            return (
-                JsonDataReader(spark)
-                if spark is not None
-                else JsonDataReader.__new__(JsonDataReader)
-            )
+            return JsonDataReader
         if suffix == ".csv":
-            return (
-                CsvDataReader(spark)
-                if spark is not None
-                else CsvDataReader.__new__(CsvDataReader)
-            )
+            return CsvDataReader
         raise ValueError(f"Unsupported file extension: {suffix}")
+
+    @staticmethod
+    def create(path: str, spark: SparkSession | None = None) -> DataReader:
+        """Cria uma instância do leitor apropriado para o caminho passado."""
+        reader_class = DataReaderFactory.resolve_reader_class(path)
+        if spark is None:
+            return reader_class.__new__(reader_class)
+        return reader_class(spark)

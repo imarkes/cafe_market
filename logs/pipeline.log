@@ -149,3 +149,22 @@
 2026-07-06 21:04:39,843 | INFO | jobs.job_raw | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
 2026-07-06 21:04:39,843 | INFO | pipeline | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
 2026-07-06 21:04:40,116 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 21:31:21,859 | INFO | spark_session | Creating Spark session
+2026-07-06 21:31:29,794 | INFO | spark_session | Creating Spark session
+2026-07-06 21:31:30,179 | INFO | jobs.job_bronze | creating DataFrame for IPCA data from path: ../storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-06 21:31:30,179 | INFO | pipeline | Reading Parquet file: ../storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-06 21:31:31,927 | INFO | jobs.job_bronze | Writing DataFrame to Parquet at: ../storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-06 21:31:31,928 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-06 21:33:55,001 | INFO | spark_session | Creating Spark session
+2026-07-06 21:34:02,505 | INFO | jobs.job_raw | Starting raw data ingestion jobs...
+2026-07-06 21:34:02,505 | INFO | jobs.job_raw | creating DataFrame for INMET (Patrocinio) data from path: ../storage/raw/dados_A523_D_2025-01-01_2026-07-06.csv
+2026-07-06 21:34:02,505 | INFO | pipeline | Creating DataFrame from path: ../storage/raw/dados_A523_D_2025-01-01_2026-07-06.csv
+2026-07-06 21:34:02,506 | INFO | readers | Reading CSV file: ../storage/raw/dados_A523_D_2025-01-01_2026-07-06.csv
+2026-07-06 21:34:04,842 | INFO | jobs.job_raw | Writing DataFrame to Parquet at: ../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-06 21:34:04,843 | INFO | pipeline | Writing DataFrame to Parquet at: ../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-06 21:34:05,725 | INFO | jobs.job_raw | creating DataFrame for INMET (Franca) data from path: ../storage/raw/dados_A708_D_2025-01-01_2026-07-06.csv
+2026-07-06 21:34:05,726 | INFO | pipeline | Creating DataFrame from path: ../storage/raw/dados_A708_D_2025-01-01_2026-07-06.csv
+2026-07-06 21:34:05,726 | INFO | readers | Reading CSV file: ../storage/raw/dados_A708_D_2025-01-01_2026-07-06.csv
+2026-07-06 21:34:05,963 | INFO | jobs.job_raw | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-06 21:34:05,963 | INFO | pipeline | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-06 21:34:06,140 | INFO | py4j.clientserver | Closing down clientserver connection

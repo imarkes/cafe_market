@@ -6,6 +6,8 @@ logger = logging.getLogger(__name__)
 
 
 class JobRawData:
+    """Orquestra a ingestão de dados brutos a partir de arquivos e APIs."""
+
     def __init__(self, payload: dict, run: Pipeline) -> None:
         self.payload = payload
         self.run = run
@@ -13,16 +15,17 @@ class JobRawData:
     def run_jobs(self) -> None:
         """Executa todos os jobs de ingestão de dados."""
         logger.info("Starting raw data ingestion jobs...")
-        self.job_robusta(self.payload)
-        self.job_arabica(self.payload)
-        self.job_selic(self.payload)
-        self.job_ipca(self.payload)
+        # self.job_robusta(self.payload)
+        # self.job_arabica(self.payload)
+        # self.job_selic(self.payload)
+        # self.job_ipca(self.payload)
         self.job_inmet_patrocinio(self.payload)
         self.job_inmet_franca(self.payload)
 
     # 1.CEPEA/ESALQ (ingestão de arquivo)
     def job_robusta(self, payload: dict):
-        """Retorna um DataFrame com os dados da série de Robusta."""
+        """Lê o arquivo de Robusta e persiste a versão bruta no formato Parquet."""
+
         path_raw_robusta = payload["robusta"].get("path_raw")
         path_bronze_robusta = payload["robusta"].get("path_bronze")
 
@@ -41,7 +44,8 @@ class JobRawData:
         return df
 
     def job_arabica(self, payload: dict):
-        """Retorna um DataFrame com os dados da série de Arabica."""
+        """Lê o arquivo de Arabica e persiste a versão bruta no formato Parquet."""
+
         path_raw_arabica = payload["arabica"].get("path_raw")
         path_bronze_arabica = payload["arabica"].get("path_bronze")
 
@@ -61,7 +65,8 @@ class JobRawData:
 
     # 2. SELIC e IPCA
     def job_selic(self, payload: dict):
-        """Retorna um DataFrame com os dados da série de SELIC."""
+        """Lê o arquivo de SELIC e persiste a versão bruta no formato Parquet."""
+
         path_raw_selic = payload["selic"].get("path_raw")
         path_bronze_selic = payload["selic"].get("path_bronze")
 
@@ -76,7 +81,8 @@ class JobRawData:
         return df
 
     def job_ipca(self, payload: dict):
-        """Retorna um DataFrame com os dados da série de IPCA."""
+        """Lê o arquivo de IPCA e persiste a versão bruta no formato Parquet."""
+
         path_raw_ipca = payload["ipca"].get("path_raw")
         path_bronze_ipca = payload["ipca"].get("path_bronze")
 
@@ -92,7 +98,8 @@ class JobRawData:
 
     # 3. INMET / BDMEP
     def job_inmet_patrocinio(self, payload: dict):
-        """Retorna um DataFrame com os dados da série de INMET (Patrocinio)."""
+        """Lê o arquivo de INMET (Patrocínio) e persiste a versão bruta no formato Parquet."""
+
         path_inmet_patrocinio = payload["inmet_patrocinio"].get("path_raw")
         path_bronze_patrocinio = payload["inmet_patrocinio"].get("path_bronze")
 
@@ -111,7 +118,8 @@ class JobRawData:
         return df
 
     def job_inmet_franca(self, payload: dict):
-        """Retorna um DataFrame com os dados da série de INMET (Franca)."""
+        """Lê o arquivo de INMET (Franca) e persiste a versão bruta no formato Parquet."""
+
         path_inmet_franca = payload["inmet_franca"].get("path_raw")
         path_bronze_franca = payload["inmet_franca"].get("path_bronze")
 

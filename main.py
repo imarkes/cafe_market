@@ -1,7 +1,7 @@
-from jobs.job_bronze import JobBrozeData
-from jobs.job_raw import JobRawData
+from jobs.job_silver import JobSilverData
 from logging_config import configure_logging
 from pipeline import Pipeline
+from jobs.job_bronze import JobBronzeData
 
 configure_logging("INFO")
 
@@ -67,16 +67,19 @@ def main() -> None:
     #     code=payload["selic"]["COD_SELIC"],
     #     start_date=payload["selic"]["start_date"],
     #     end_date=payload["selic"]["end_date"],
-    #     output_path=payload["selic"]["path_raw"],
     # )
 
     # Exemplo de execução do fluxo raw
-    job_raw = JobRawData(payload=payload, run=run)
-    job_raw.run_jobs()
+    job_bronze = JobBronzeData(payload=payload, run=run)
+    job_bronze.run_jobs()
 
-    # # Exemplo de execução do fluxo bronze
-    # job_bronze = JobBrozeData(payload=payload, run=run)
-    # job_bronze.job_ipca(payload=payload)
+    # Exemplo de execucao sob demanda
+    # job_bronze.job_robusta()
+    # job_bronze.job_ipca()
+
+    # Exemplo de execução do fluxo silver
+    # job_silver = JobSilverData(payload=payload, run=run)
+    # job_silver.job_inmet_franca()
 
 
 if __name__ == "__main__":

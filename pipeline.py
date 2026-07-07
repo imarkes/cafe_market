@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Optional
 
 from downloader import TaxDataDownloader
@@ -27,14 +28,48 @@ class Pipeline:
         )
         return self.tax_series.download(code, start_date, end_date)
 
-    def create_dataframe(self, path: str, sheet_name: str | None = None) -> DataFrame:
+    def _prepare_csv_for_reading(self, path: str, options: Optional[dict] = None) -> str:
+        """Remove linhas de metadados de preâmbulo e devolve um caminho temporário com os dados limpos."""
+        source_path = Path(path)
+        if source_path.suffix.lower() != ".csv":
+            return path
+
+        lines = source_path.read_text(encoding="utf-8").splitlines()
+        start_index = 0
+        for index, line in enumerate(lines):
+
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if ":" in stripped and ";" not in stripped and "," not in stripped:
+                continue
+            start_index = index
+            break
+
+        cleaned_lines = [line.rstrip() for line in lines[start_index:]]
+
+        with NamedTemporaryFile("w", encoding="utf-8", suffix=".csv", delete=False) as handle:
+            handle.write("\n".join(cleaned_lines) + "\n")
+            temp_path = handle.name
+
+        logger.info("Prepared CSV for Spark reading at %s", temp_path)
+        return temp_path
+
+    def create_dataframe(
+        self, path: str, options: dict | None = None, sheet_name: str | None = None
+    ) -> DataFrame:
         """Cria um DataFrame a partir de um arquivo suportado."""
         logger.info("Creating DataFrame from path: %s", path)
         reader = DataReaderFactory.create(path, self.spark)
-        options = (
-            {"dataAddress": sheet_name} if Path(path).suffix.lower() == ".xls" else {}
-        )
-        return reader.read(path, **options)
+        read_options = dict(options or {})
+        if Path(path).suffix.lower() == ".xls":
+            read_options["dataAddress"] = sheet_name or read_options.get(
+                "dataAddress", "'Sheet1'!A1"
+            )
+        elif Path(path).suffix.lower() == ".csv":
+            prepared_path = self._prepare_csv_for_reading(path, read_options)
+            return reader.read(prepared_path, **read_options)
+        return reader.read(path, **read_options)
 
     def write_parquet(
         self,
@@ -54,13 +89,8 @@ class Pipeline:
     def read_parquet(self, path: str, options: Optional[dict] = None) -> DataFrame:
         """Lê um arquivo Parquet já persistido."""
         logger.info("Reading Parquet file: %s", path)
-        read_options = options or {}
-        return self.spark.read.options(**read_options).parquet(path)
 
-    def process_data(self, df: DataFrame, process_function) -> DataFrame:
-        """Aplica uma função de processamento a um DataFrame."""
-        logger.info("Processing DataFrame with provided function.")
-        return process_function(df)
+        return self.spark.read.options(**(options or {})).parquet(path)
 
 
 if __name__ == "__main__":

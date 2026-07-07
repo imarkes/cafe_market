@@ -39,13 +39,15 @@ class CsvDataReader:
 
     def read(self, path: str, **options: str) -> DataFrame:
         logger.info("Reading CSV file: %s", path)
-        return (
+        reader = (
             self.spark.read.format("csv")
-            .option("header", options.get("header", "true"))
-            .option("inferSchema", options.get("inferSchema", "true"))
-            .option("delimiter", options.get("delimiter", ";"))
-            .load(path)
         )
+
+        skip_rows = options.get("skipRows", options.get("skiprows"))
+        if skip_rows is not None and skip_rows != "":
+            reader = reader.option("skipRows", int(skip_rows))
+
+        return reader.load(path)
 
 
 class JsonDataReader:

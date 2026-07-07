@@ -31,6 +31,23 @@ class ExcelDataReader:
         )
 
 
+class CsvDataReader:
+    """Cria dataframe baseado em um arquivo CSV usando o Spark."""
+
+    def __init__(self, spark: SparkSession) -> None:
+        self.spark = spark
+
+    def read(self, path: str, **options: str) -> DataFrame:
+        logger.info("Reading CSV file: %s", path)
+        return (
+            self.spark.read.format("csv")
+            .option("header", options.get("header", "true"))
+            .option("inferSchema", options.get("inferSchema", "true"))
+            .option("delimiter", options.get("delimiter", ";"))
+            .load(path)
+        )
+
+
 class JsonDataReader:
     """Cria dataframe baseado em um arquivo JSON usando o Spark."""
 
@@ -64,5 +81,11 @@ class DataReaderFactory:
                 JsonDataReader(spark)
                 if spark is not None
                 else JsonDataReader.__new__(JsonDataReader)
+            )
+        if suffix == ".csv":
+            return (
+                CsvDataReader(spark)
+                if spark is not None
+                else CsvDataReader.__new__(CsvDataReader)
             )
         raise ValueError(f"Unsupported file extension: {suffix}")

@@ -20,13 +20,12 @@ class JobSilverData:
     def run_jobs(self) -> None:
         """Executa a padronização de todas as fontes disponíveis."""
         logger.info("Starting silver standardization jobs...")
-        self._prepare_payload_sources(self.payload)
-        self.job_ipca(self.payload)
-        self.job_selic(self.payload)
-        self.job_robusta(self.payload)
-        self.job_arabica(self.payload)
-        self.job_inmet_patrocinio(self.payload)
-        self.job_inmet_franca(self.payload)
+        self.job_ipca()
+        self.job_selic()
+        self.job_robusta()
+        self.job_arabica()
+        self.job_inmet_patrocinio()
+        self.job_inmet_franca()
 
 
     def _prepare_payload_sources(self, payload: dict) -> None:
@@ -55,29 +54,6 @@ class JobSilverData:
         source_payload["metadata_path"] = str(metadata_path)
         source_payload["path_raw_cleaned"] = str(cleaned_path)
         logger.info("Prepared cleaned source file for %s at %s", source_name, cleaned_path)
-
-    def _extract_header_metadata(self, raw_path: Path | str, output_dir: Path | str | None = None) -> Path:
-        """Extrai metadados em formato de cabeçalho de um arquivo bruto e salva como JSON."""
-        source_path = Path(raw_path)
-        if not source_path.exists():
-            raise FileNotFoundError(f"Source file not found: {source_path}")
-
-        metadata: dict[str, str] = {}
-        lines = source_path.read_text(encoding="utf-8").splitlines()
-        for line in lines:
-            stripped = line.strip()
-            if not stripped or ":" not in stripped:
-                continue
-            key, value = stripped.split(":", 1)
-            if key and value.strip():
-                metadata[key.strip()] = value.strip()
-
-        output_folder = Path(output_dir) if output_dir is not None else source_path.parent
-        output_folder.mkdir(parents=True, exist_ok=True)
-        metadata_path = output_folder / f"{source_path.stem}.metadata.json"
-        metadata_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
-        logger.info("Extracted %s metadata fields from %s", len(metadata), source_path)
-        return metadata_path
 
     def _write_cleaned_source_file(self, raw_path: Path | str, output_dir: Path | str | None = None) -> Path:
         """Cria uma cópia limpa do arquivo bruto removendo o bloco de metadados de preâmbulo."""
@@ -251,11 +227,11 @@ class JobSilverData:
         self.run.write_parquet(df=df, output_path=path_silver, partitions=["data_mes"])
         return df
 
-    def job_inmet_patrocinio(self, payload: dict) -> DataFrame:
+    def job_inmet_patrocinio(self) -> DataFrame:
         """Padroniza os dados climáticos do INMET Patrocínio vindos do bronze."""
-        path_bronze = payload["inmet_patrocinio"]["path_bronze"]
-        path_silver = payload["inmet_patrocinio"]["path_silver"]
-        self._prepare_source_metadata(payload["inmet_patrocinio"], source_name="inmet_patrocinio")
+        path_bronze = self.payload["inmet_patrocinio"]["path_bronze"]
+        path_silver = self.payload["inmet_patrocinio"]["path_silver"]
+        # self._prepare_source_metadata(payload["inmet_patrocinio"], source_name="inmet_patrocinio")
         col_names = [
             "data_medicao",
             "precipitacao_total_mm",
@@ -293,11 +269,11 @@ class JobSilverData:
         df.show(5,truncate=False)  # Exibe o DataFrame para depuração
         return df
 
-    def job_inmet_franca(self, payload: dict) -> DataFrame:
+    def job_inmet_franca(self) -> DataFrame:
         """Padroniza os dados climáticos do INMET Franca vindos do bronze."""
-        path_bronze = payload["inmet_franca"]["path_bronze"]
-        path_silver = payload["inmet_franca"]["path_silver"]
-        self._prepare_source_metadata(payload["inmet_franca"], source_name="inmet_franca")
+        path_bronze = self.payload["inmet_franca"]["path_bronze"]
+        path_silver = self.payload["inmet_franca"]["path_silver"]
+        # self._prepare_source_metadata(payload["inmet_franca"], source_name="inmet_franca")
         logger.info("Standardizing INMET Franca data from %s", path_bronze)
 
         df = self.run.read_parquet(path_bronze)
@@ -305,14 +281,41 @@ class JobSilverData:
             logger.warning("No bronze dataframe available for INMET Franca at %s; skipping silver transformation", path_bronze)
             return None
 
-        df = (
-            df.withColumnRenamed("Nome: FRANCA", "metadata")
-            .withColumn("fonte", F.lit("INMET_FRANCA"))
-            .withColumn("data", F.lit(None).cast("date"))
-            .withColumn("valor", F.lit(None).cast("double"))
-            .dropDuplicates(["metadata", "fonte"])
-        )
+        col_names = [
+        "data_medicao",
+        "precipitacao_total_mm",
+        "temp_max_c",
+        "temp_media_c",
+        "temp_min_c",
+        "umidade_rel_media",
+        "umidade_rel_minima"
+    ]
 
-        self.run.write_parquet(df=df, output_path=path_silver, partitions=["fonte"])
+        df = self._cleane_csv_header(df, col_names)
+        # df = (
+        #     df.withColumnRenamed("Nome: FRANCA", "metadata")
+        #     .withColumn("fonte", F.lit("INMET_FRANCA"))
+        #     .withColumn("data", F.lit(None).cast("date"))
+        #     .withColumn("valor", F.lit(None).cast("double"))
+        #     .dropDuplicates(["metadata", "fonte"])
+        # )
 
+        # self.run.write_parquet(df=df, output_path=path_silver, partitions=["fonte"])
+        df.show(5,truncate=False)
         return df
+
+    def _cleane_csv_header(self,df, col_names=list[str]):
+
+        # 2. Cria um ID sequencial para conseguir identificar e pular as linhas de metadados
+        indexed_df = df.withColumn("row_id", F.monotonically_increasing_id())
+        # 3. Filtra mantendo apenas as linhas de dados (linha 11 em diante)
+        data_lines_df = indexed_df.filter("row_id >= 1")
+
+        data_lines_df.show()
+        # 4. Define os nomes das suas colunas
+
+
+        # 5. Divide a string única pelo delimitador ';' e mapeia para as novas colunas
+        return data_lines_df.select(
+            *[F.split(F.col("value"), ";")[i].alias(col_names[i]) for i in range(len(col_names))]
+        )

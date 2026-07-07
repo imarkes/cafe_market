@@ -71,11 +71,12 @@ def main() -> None:
 
     # Exemplo de execução do fluxo raw
     job_bronze = JobBronzeData(payload=payload, run=run)
-    job_bronze.run_jobs()
+    # job_bronze.run_jobs()
 
     # Exemplo de execucao sob demanda
     # job_bronze.job_robusta()
-    # job_bronze.job_ipca()
+    job_bronze.job_inmet_franca()
+    job_bronze.job_inmet_patrocinio()
 
     # Exemplo de execução do fluxo silver
     # job_silver = JobSilverData(payload=payload, run=run)

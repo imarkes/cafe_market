@@ -1,4 +1,6 @@
+import json
 import logging
+from pathlib import Path
 
 from pipeline import Pipeline
 
@@ -28,7 +30,7 @@ class JobBronzeData:
 
         path_raw_robusta = self.payload["robusta"].get("path_raw")
         path_bronze_robusta = self.payload["robusta"].get("path_bronze")
-
+        self._prepare_source_metadata(self.payload["robusta"], source_name="robusta")
         logger.info(
             "creating DataFrame for Robusta data from path: %s", path_raw_robusta
         )
@@ -49,6 +51,7 @@ class JobBronzeData:
 
         path_raw_arabica = self.payload["arabica"].get("path_raw")
         path_bronze_arabica = self.payload["arabica"].get("path_bronze")
+        self._prepare_source_metadata(self.payload["arabica"], source_name="arabica")
 
         logger.info(
             "creating DataFrame for Arabica data from path: %s", path_raw_arabica
@@ -71,7 +74,7 @@ class JobBronzeData:
 
         path_raw_selic = self.payload["selic"].get("path_raw")
         path_bronze_selic = self.payload["selic"].get("path_bronze")
-
+        self._prepare_source_metadata(self.payload["selic"], source_name="selic")
         logger.info("creating DataFrame for SELIC data from path: %s", path_raw_selic)
         df = self.run.create_dataframe(path=path_raw_selic)
 
@@ -88,7 +91,7 @@ class JobBronzeData:
 
         path_raw_ipca = self.payload["ipca"].get("path_raw")
         path_bronze_ipca = self.payload["ipca"].get("path_bronze")
-
+        self._prepare_source_metadata(self.payload["ipca"], source_name="ipca")
         logger.info("creating DataFrame for IPCA data from path: %s", path_raw_ipca)
         df = self.run.create_dataframe(path=path_raw_ipca)
 
@@ -106,7 +109,9 @@ class JobBronzeData:
 
         path_inmet_patrocinio = self.payload["inmet_patrocinio"].get("path_raw")
         path_bronze_patrocinio = self.payload["inmet_patrocinio"].get("path_bronze")
-
+        self._prepare_source_metadata(
+            self.payload["inmet_patrocinio"], source_name="patrocinio"
+        )
         logger.info(
             "creating DataFrame for INMET (Patrocinio) data from path: %s",
             path_inmet_patrocinio,
@@ -134,6 +139,7 @@ class JobBronzeData:
 
         path_inmet_franca = self.payload["inmet_franca"].get("path_raw")
         path_bronze_franca = self.payload["inmet_franca"].get("path_bronze")
+        self._prepare_source_metadata(self.payload["inmet_franca"], source_name="franca")
 
         logger.info(
             "creating DataFrame for INMET (Franca) data from path: %s",
@@ -150,6 +156,58 @@ class JobBronzeData:
         )
         df.show(2)
         return df
+
+    def _prepare_source_metadata(
+        self, source_payload: dict, source_name: str | None = None
+    ) -> None:
+        """Extrai metadados de cabeçalho e cria uma cópia limpa do arquivo bruto."""
+        raw_path = source_payload.get("path_raw")
+        if not raw_path:
+            return
+
+        source_path = Path(raw_path)
+        if not source_path.exists():
+            logger.warning(
+                "Raw source not found for silver metadata preparation: %s",
+                source_path,
+            )
+            return
+
+        metadata_folder = Path("../storage/meta") / (source_name or source_path.stem)
+        metadata_path = self._extract_header_metadata(
+            source_path,
+            output_dir=metadata_folder,
+        )
+        source_payload["metadata_path"] = str(metadata_path)
+
+    def _extract_header_metadata(
+        self, raw_path: Path | str, output_dir: Path | str | None = None
+    ) -> Path:
+        """Extrai metadados em formato de cabeçalho de um arquivo bruto e salva como JSON."""
+        source_path = Path(raw_path)
+        if not source_path.exists():
+            raise FileNotFoundError(f"Source file not found: {source_path}")
+
+        metadata: dict[str, str] = {}
+        lines = source_path.read_text(encoding="utf-8").splitlines()
+        for line in lines:
+            stripped = line.strip()
+            if not stripped or ":" not in stripped:
+                continue
+            key, value = stripped.split(":", 1)
+            if key and value.strip():
+                metadata[key.strip()] = value.strip()
+
+        output_folder = (
+            Path(output_dir) if output_dir is not None else source_path.parent
+        )
+        output_folder.mkdir(parents=True, exist_ok=True)
+        metadata_path = output_folder / f"{source_path.stem}.metadata.json"
+        metadata_path.write_text(
+            json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        logger.info("Extracted %s metadata fields from %s", len(metadata), source_path)
+        return metadata_path
 
 
 if __name__ == "__main__":

@@ -584,3 +584,47 @@
 2026-07-07 09:24:16,816 | INFO | jobs.job_bronze | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
 2026-07-07 09:24:16,816 | INFO | pipeline | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
 2026-07-07 09:24:17,106 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:31:49,219 | INFO | spark_session | Creating Spark session
+2026-07-07 09:31:57,103 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:32:42,687 | INFO | spark_session | Creating Spark session
+2026-07-07 09:32:50,111 | INFO | jobs.job_silver | Standardizing INMET Franca data from ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:32:50,111 | INFO | pipeline | Reading Parquet file: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:32:53,246 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:36:37,214 | INFO | spark_session | Creating Spark session
+2026-07-07 09:36:44,118 | INFO | jobs.job_silver | Standardizing INMET Franca data from ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:36:44,118 | INFO | pipeline | Reading Parquet file: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:36:45,553 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:37:03,884 | INFO | spark_session | Creating Spark session
+2026-07-07 09:37:10,673 | INFO | jobs.job_silver | Standardizing INMET Franca data from ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:37:10,673 | INFO | pipeline | Reading Parquet file: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:37:13,495 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:38:21,578 | INFO | spark_session | Creating Spark session
+2026-07-07 09:38:28,786 | INFO | jobs.job_silver | Standardizing INMET Franca data from ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:38:28,786 | INFO | pipeline | Reading Parquet file: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:38:32,628 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:50:05,990 | INFO | spark_session | Creating Spark session
+2026-07-07 09:50:13,114 | INFO | jobs.job_bronze | Starting raw data ingestion jobs...
+2026-07-07 09:50:13,120 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:53:25,967 | INFO | spark_session | Creating Spark session
+2026-07-07 09:53:33,214 | INFO | jobs.job_bronze | Starting raw data ingestion jobs...
+2026-07-07 09:53:33,216 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:54:02,164 | INFO | spark_session | Creating Spark session
+2026-07-07 09:54:08,784 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:54:53,834 | INFO | spark_session | Creating Spark session
+2026-07-07 09:55:00,643 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 09:55:34,202 | INFO | spark_session | Creating Spark session
+2026-07-07 09:55:41,263 | INFO | jobs.job_bronze | Extracted 9 metadata fields from ../storage/raw/dados_A708_D_2025-01-01_2026-07-06.csv
+2026-07-07 09:55:41,263 | INFO | jobs.job_bronze | creating DataFrame for INMET (Franca) data from path: ../storage/raw/dados_A708_D_2025-01-01_2026-07-06.csv
+2026-07-07 09:55:41,263 | INFO | pipeline | Creating DataFrame from path: ../storage/raw/dados_A708_D_2025-01-01_2026-07-06.csv
+2026-07-07 09:55:41,263 | INFO | pipeline | Prepared CSV for Spark reading at /tmp/tmpmrlsgx4t.csv
+2026-07-07 09:55:41,263 | INFO | readers | Reading CSV file: /tmp/tmpmrlsgx4t.csv
+2026-07-07 09:55:43,702 | INFO | jobs.job_bronze | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:55:43,702 | INFO | pipeline | Writing DataFrame to Parquet at: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 09:55:45,017 | INFO | jobs.job_bronze | Extracted 9 metadata fields from ../storage/raw/dados_A523_D_2025-01-01_2026-07-06.csv
+2026-07-07 09:55:45,017 | INFO | jobs.job_bronze | creating DataFrame for INMET (Patrocinio) data from path: ../storage/raw/dados_A523_D_2025-01-01_2026-07-06.csv
+2026-07-07 09:55:45,017 | INFO | pipeline | Creating DataFrame from path: ../storage/raw/dados_A523_D_2025-01-01_2026-07-06.csv
+2026-07-07 09:55:45,018 | INFO | pipeline | Prepared CSV for Spark reading at /tmp/tmp93_m22gn.csv
+2026-07-07 09:55:45,018 | INFO | readers | Reading CSV file: /tmp/tmp93_m22gn.csv
+2026-07-07 09:55:45,245 | INFO | jobs.job_bronze | Writing DataFrame to Parquet at: ../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-07 09:55:45,245 | INFO | pipeline | Writing DataFrame to Parquet at: ../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-07 09:55:45,706 | INFO | py4j.clientserver | Closing down clientserver connection

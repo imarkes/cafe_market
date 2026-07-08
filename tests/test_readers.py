@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from readers import DataReaderFactory, ExcelDataReader, JsonDataReader
+from pipelines.readers_old import DataReaderFactory, ExcelDataReader, JsonDataReader
 
 
 def test_factory_returns_excel_reader_for_xls_extension():

@@ -1,214 +1,214 @@
+from __future__ import annotations
+
 import json
 import logging
+import re
+import unicodedata
 from pathlib import Path
 
 from pipeline import Pipeline
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import lit
 
 logger = logging.getLogger(__name__)
 
 
 class JobBronzeData:
-    """Orquestra a ingestão de dados brutos a partir de arquivos e APIs."""
+    """
+    Responsável pela ingestão da camada Bronze.
 
-    def __init__(self, payload: dict, run: Pipeline) -> None:
+    A classe é totalmente genérica e utiliza apenas as
+    configurações existentes no payload.
+
+    Fluxo
+
+        payload
+            ↓
+        resolve input
+            ↓
+        create dataframe
+            ↓
+        add metadata (quando existir)
+            ↓
+        write parquet
+    """
+
+    def __init__(
+        self,
+        payload: dict,
+        run: Pipeline,
+    ) -> None:
+
         self.payload = payload
         self.run = run
 
-    def run_jobs(self) -> None:
-        """Executa todos os jobs de ingestão de dados."""
-        logger.info("Starting raw data ingestion jobs...")
-        self.job_robusta()
-        self.job_arabica()
-        self.job_selic()
-        self.job_ipca()
-        self.job_inmet_patrocinio()
-        self.job_inmet_franca()
+    def run_all(self) -> None:
+        """
+        Executa todos os jobs definidos no payload.
+        """
 
-    # 1.CEPEA/ESALQ (ingestão de arquivo)
-    def job_robusta(self):
-        """Lê o arquivo de Robusta e persiste a versão bruta no formato Parquet."""
+        logger.info("Starting Bronze ingestion...")
 
-        path_raw_robusta = self.payload["robusta"].get("path_raw")
-        path_bronze_robusta = self.payload["robusta"].get("path_bronze")
-        self._prepare_source_metadata(self.payload["robusta"], source_name="robusta")
-        logger.info(
-            "creating DataFrame for Robusta data from path: %s", path_raw_robusta
-        )
-        df = self.run.create_dataframe(
-            path=path_raw_robusta,
-            sheet_name=self.payload["robusta"].get("sheet_name"),
-        )
-        logger.info("Writing DataFrame to Parquet at: %s", path_bronze_robusta)
-        self.run.write_parquet(
-            df=df,
-            output_path=path_bronze_robusta,
-        )
-        df.show(2)
-        return df
+        for source_name in self.payload:
+            self.process_source(source_name)
 
-    def job_arabica(self):
-        """Lê o arquivo de Arabica e persiste a versão bruta no formato Parquet."""
+        logger.info("Bronze ingestion finished.")
 
-        path_raw_arabica = self.payload["arabica"].get("path_raw")
-        path_bronze_arabica = self.payload["arabica"].get("path_bronze")
-        self._prepare_source_metadata(self.payload["arabica"], source_name="arabica")
+    def process_source(
+        self,
+        source_name: str,
+    ) -> DataFrame:
+        """
+        Processa uma origem de dados.
+
+        Parameters
+        ----------
+        source_name
+
+            Nome da origem existente no payload.
+
+        Returns
+        -------
+        DataFrame
+        """
+
+        source = self.payload[source_name]
+
+        input_path = self._resolve_input_path(source)
 
         logger.info(
-            "creating DataFrame for Arabica data from path: %s", path_raw_arabica
-        )
-        df = self.run.create_dataframe(
-            path=path_raw_arabica,
-            sheet_name=self.payload["arabica"].get("sheet_name"),
-        )
-        logger.info("Writing DataFrame to Parquet at: %s", path_bronze_arabica)
-        self.run.write_parquet(
-            df=df,
-            output_path=path_bronze_arabica,
-        )
-        df.show(2)
-        return df
-
-    # 2. SELIC e IPCA
-    def job_selic(self):
-        """Lê o arquivo de SELIC e persiste a versão bruta no formato Parquet."""
-
-        path_raw_selic = self.payload["selic"].get("path_raw")
-        path_bronze_selic = self.payload["selic"].get("path_bronze")
-        self._prepare_source_metadata(self.payload["selic"], source_name="selic")
-        logger.info("creating DataFrame for SELIC data from path: %s", path_raw_selic)
-        df = self.run.create_dataframe(path=path_raw_selic)
-
-        logger.info("Writing DataFrame to Parquet at: %s", path_bronze_selic)
-        self.run.write_parquet(
-            df=df,
-            output_path=path_bronze_selic,
-        )
-        df.show(2)
-        return df
-
-    def job_ipca(self):
-        """Lê o arquivo de IPCA e persiste a versão bruta no formato Parquet."""
-
-        path_raw_ipca = self.payload["ipca"].get("path_raw")
-        path_bronze_ipca = self.payload["ipca"].get("path_bronze")
-        self._prepare_source_metadata(self.payload["ipca"], source_name="ipca")
-        logger.info("creating DataFrame for IPCA data from path: %s", path_raw_ipca)
-        df = self.run.create_dataframe(path=path_raw_ipca)
-
-        logger.info("Writing DataFrame to Parquet at: %s", path_bronze_ipca)
-        self.run.write_parquet(
-            df=df,
-            output_path=path_bronze_ipca,
-        )
-        df.show(2)
-        return df
-
-    # 3. INMET / BDMEP
-    def job_inmet_patrocinio(self):
-        """Lê o arquivo de INMET (Patrocínio) e persiste a versão bruta no formato Parquet."""
-
-        path_inmet_patrocinio = self.payload["inmet_patrocinio"].get("path_raw")
-        path_bronze_patrocinio = self.payload["inmet_patrocinio"].get("path_bronze")
-        self._prepare_source_metadata(
-            self.payload["inmet_patrocinio"], source_name="patrocinio"
-        )
-        logger.info(
-            "creating DataFrame for INMET (Patrocinio) data from path: %s",
-            path_inmet_patrocinio,
-        )
-        df = self.run.create_dataframe(
-            path=path_inmet_patrocinio,
-            options={
-                "skipRows": 10,
-                "delimiter": ";",
-                "header": "true",
-                "inferSchema": "true",
-            },
-        )
-        logger.info("Writing DataFrame to Parquet at: %s", path_bronze_patrocinio)
-
-        self.run.write_parquet(
-            df=df,
-            output_path=path_bronze_patrocinio,
-        )
-        df.show(2)
-        return df
-
-    def job_inmet_franca(self):
-        """Lê o arquivo de INMET (Franca) e persiste a versão bruta no formato Parquet."""
-
-        path_inmet_franca = self.payload["inmet_franca"].get("path_raw")
-        path_bronze_franca = self.payload["inmet_franca"].get("path_bronze")
-        self._prepare_source_metadata(self.payload["inmet_franca"], source_name="franca")
-
-        logger.info(
-            "creating DataFrame for INMET (Franca) data from path: %s",
-            path_inmet_franca,
+            "Reading source '%s' from %s",
+            source_name,
+            input_path,
         )
 
         df = self.run.create_dataframe(
-            path=path_inmet_franca,
+            path=input_path,
+            options=self._build_read_options(source),
         )
-        logger.info("Writing DataFrame to Parquet at: %s", path_bronze_franca)
+
+        metadata = self._load_metadata(source_name)
+
+        if metadata:
+            df = self._add_metadata(df, metadata)
+
         self.run.write_parquet(
             df=df,
-            output_path=path_bronze_franca,
+            output_path=source["path_bronze"],
+            partitions=source.get("partitions"),
         )
-        df.show(2)
+
+        logger.info(
+            "Bronze dataset successfully created: %s",
+            source_name,
+        )
+        df.printSchema()
+        print("*-" * 50)
         return df
 
-    def _prepare_source_metadata(
-        self, source_payload: dict, source_name: str | None = None
-    ) -> None:
-        """Extrai metadados de cabeçalho e cria uma cópia limpa do arquivo bruto."""
-        raw_path = source_payload.get("path_raw")
-        if not raw_path:
-            return
+    def _resolve_input_path(
+        self,
+        source: dict,
+    ) -> str:
+        """
+        Retorna o arquivo correto.
 
-        source_path = Path(raw_path)
-        if not source_path.exists():
-            logger.warning(
-                "Raw source not found for silver metadata preparation: %s",
-                source_path,
+        Para arquivos tratados (INMET)
+        utiliza path_raw_cleaned.
+
+        Caso contrário utiliza path_raw.
+        """
+
+        return source.get(
+            "path_raw_cleaned",
+            source["path_raw"],
+        )
+
+    def _build_read_options(
+        self,
+        source: dict,
+    ) -> dict:
+        """
+        Constrói as opções de leitura
+        para o Reader correspondente.
+        """
+
+        options: dict = {}
+
+        sheet = source.get("dataAddress")
+
+        if sheet:
+            options["dataAddress"] = sheet
+
+        return options
+
+    def _load_metadata(
+        self,
+        source_name: str,
+    ) -> dict:
+
+        metadata_path = Path("../storage/meta") / source_name / "metadata.json"
+
+        if not metadata_path.exists():
+            return {}
+
+        with metadata_path.open(encoding="utf-8") as fp:
+
+            return json.load(fp)
+
+    def _add_metadata(
+        self,
+        df: DataFrame,
+        metadata: dict,
+    ) -> DataFrame:
+        """
+        Adiciona todas as chaves do metadata
+        como colunas constantes.
+        """
+
+        for key, value in metadata.items():
+
+            column = self._normalize_column_name(key)
+
+            df = df.withColumn(
+                column,
+                lit(value),
             )
-            return
 
-        metadata_folder = Path("../storage/meta") / (source_name or source_path.stem)
-        metadata_path = self._extract_header_metadata(
-            source_path,
-            output_dir=metadata_folder,
+        return df
+
+    @staticmethod
+    def _normalize_column_name(
+        column: str,
+    ) -> str:
+        """
+        Converte um texto para snake_case.
+
+        Exemplo
+
+            Codigo Estacao
+
+        torna-se
+
+            codigo_estacao
+        """
+
+        column = unicodedata.normalize(
+            "NFKD",
+            column,
         )
-        source_payload["metadata_path"] = str(metadata_path)
 
-    def _extract_header_metadata(
-        self, raw_path: Path | str, output_dir: Path | str | None = None
-    ) -> Path:
-        """Extrai metadados em formato de cabeçalho de um arquivo bruto e salva como JSON."""
-        source_path = Path(raw_path)
-        if not source_path.exists():
-            raise FileNotFoundError(f"Source file not found: {source_path}")
+        column = column.encode(
+            "ascii",
+            "ignore",
+        ).decode("utf8")
 
-        metadata: dict[str, str] = {}
-        lines = source_path.read_text(encoding="utf-8").splitlines()
-        for line in lines:
-            stripped = line.strip()
-            if not stripped or ":" not in stripped:
-                continue
-            key, value = stripped.split(":", 1)
-            if key and value.strip():
-                metadata[key.strip()] = value.strip()
+        column = column.lower()
 
-        output_folder = (
-            Path(output_dir) if output_dir is not None else source_path.parent
+        column = re.sub(
+            r"[^a-z0-9]+",
+            "_",
+            column,
         )
-        output_folder.mkdir(parents=True, exist_ok=True)
-        metadata_path = output_folder / f"{source_path.stem}.metadata.json"
-        metadata_path.write_text(
-            json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        logger.info("Extracted %s metadata fields from %s", len(metadata), source_path)
-        return metadata_path
 
-
-if __name__ == "__main__":
-    ...
+        return column.strip("_")

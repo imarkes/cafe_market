@@ -1,10 +1,12 @@
-from jobs.job_silver import JobSilverData
+import logging
+
 from logging_config import configure_logging
-from pipeline import Pipeline
+
 from jobs.job_bronze import JobBronzeData
+from pipeline import Pipeline
 
 configure_logging("INFO")
-
+logger = logging.getLogger(__name__)
 
 payload = {
     "ipca": {
@@ -28,7 +30,7 @@ payload = {
         "path_gold": "../storage/gold/bcb/selic/serie_11.parquet",
     },
     "robusta": {
-        "sheet_name": "'Plan 1'!A4",  # !Atencao ao nome da planilha
+        "dataAddress": "'Plan 1'!A4",  # !Atencao ao nome da planilha
         "partitions": ["Data"],
         "path_raw": "../storage/raw/ROBUSTA_CEPEA_20260706165657.xls",
         "path_bronze": "../storage/bronze/cepea/robusta/robusta_cepea.parquet",
@@ -36,7 +38,7 @@ payload = {
         "path_gold": "../storage/gold/cepea/robusta/robusta_cepea.parquet",
     },
     "arabica": {
-        "sheet_name": "'Plan 1'!A4",  # !Atencao ao nome da planilha
+        "dataAddress": "'Plan 1'!A4",  # !Atencao ao nome da planilha
         "partitions": ["Data"],
         "path_raw": "../storage/raw/ARABICA_CEPEA_20260706165648.xls",
         "path_bronze": "../storage/bronze/cepea/arabica/arabica_cepa.parquet",
@@ -44,44 +46,73 @@ payload = {
         "path_gold": "../storage/gold/cepea/arabica/arabica_cepa.parquet",
     },
     "inmet_patrocinio": {
-        "partitions": ["Data"],
+        "partitions": ["data_medicao"],
         "path_raw": "../storage/raw/dados_A523_D_2025-01-01_2026-07-06.csv",
+        "path_raw_cleaned": "../storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv",
         "path_bronze": "../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet",
         "path_silver": "../storage/silver/inmet/patrocinio/inmet_patrocinio.parquet",
         "path_gold": "../storage/gold/inmet/patrocinio/inmet_patrocinio.parquet",
     },
     "inmet_franca": {
-        "partitions": ["Data"],
+        "partitions": ["data_medicao"],
         "path_raw": "../storage/raw/dados_A708_D_2025-01-01_2026-07-06.csv",
+        "path_raw_cleaned": "../storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv",
         "path_bronze": "../storage/bronze/inmet/franca/inmet_franca.parquet",
         "path_silver": "../storage/silver/inmet/franca/inmet_franca.parquet",
         "path_gold": "../storage/gold/inmet/franca/inmet_franca.parquet",
     },
 }
 def main() -> None:
-    """Ponto de entrada principal da pipeline."""
-    run = Pipeline()
+    """
+    Ponto de entrada da pipeline.
 
-    # Exemplo para baixar os dados do Banco Central (SELIC e IPCA)
-    # run.download_tax_series(
+    Fluxo:
+
+        Download (opcional)
+              ↓
+        Bronze
+              ↓
+        Silver
+              ↓
+        Gold
+    """
+
+    logger.info("Starting pipeline...")
+
+    pipeline = Pipeline()
+
+    #
+    # Download opcional das séries do Banco Central
+    #
+    # pipeline.download_tax_series(
     #     code=payload["selic"]["COD_SELIC"],
     #     start_date=payload["selic"]["start_date"],
     #     end_date=payload["selic"]["end_date"],
     # )
+    # pipeline.download_tax_series(
+    #     code=payload["ipca"]["COD_IPCA"],
+    #     start_date=payload["ipca"]["start_date"],
+    #     end_date=payload["ipca"]["end_date"],
+    # )
+    bronze = JobBronzeData(
+        payload=payload,
+        run=pipeline,
+    )
 
-    # Exemplo de execução do fluxo raw
-    job_bronze = JobBronzeData(payload=payload, run=run)
-    # job_bronze.run_jobs()
+    #
+    # Executa todas as fontes
+    # bronze.run_all()
 
-    # Exemplo de execucao sob demanda
-    # job_bronze.job_robusta()
-    job_bronze.job_inmet_franca()
-    job_bronze.job_inmet_patrocinio()
+    ####
+    # Executa sob demanda
+    # bronze.process_source("robusta")
+    # bronze.process_source("arabica")
+    # bronze.process_source("selic")
+    # bronze.process_source("ipca")
+    # bronze.process_source("inmet_franca")
+    # bronze.process_source("inmet_patrocinio")
 
-    # Exemplo de execução do fluxo silver
-    # job_silver = JobSilverData(payload=payload, run=run)
-    # job_silver.job_inmet_franca()
-
+    logger.info("Pipeline finished successfully.")
 
 if __name__ == "__main__":
     main()

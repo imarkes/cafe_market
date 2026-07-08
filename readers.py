@@ -1,90 +1,80 @@
-from __future__ import annotations
-
-import logging
 from pathlib import Path
-from typing import Protocol
-
-from pyspark.sql import DataFrame, SparkSession
-
-logger = logging.getLogger(__name__)
 
 
-class DataReader(Protocol):
-    def read(self, path: str, **options: str) -> DataFrame: ...
+class BaseReader:
 
+    format_name = ""
 
-class ExcelDataReader:
-    """Cria dataframe baseado em um arquivo
-    Excel usando o Spark. Suporta arquivos com extensão .xls e .xlsx."""
-
-    def __init__(self, spark: SparkSession) -> None:
+    def __init__(self, spark):
         self.spark = spark
 
-    def read(self, path: str, **options: str) -> DataFrame:
-        logger.info("Reading Excel file: %s", path)
-        return (
-            self.spark.read.format("com.crealytics.spark.excel")
-            .option("header", options.get("header", "true"))
-            .option("inferSchema", options.get("inferSchema", "true"))
-            .option("dataAddress", options.get("dataAddress", "'Sheet1'!A1"))
-            .load(path)
-        )
+    def read(self, path, **options):
 
+        reader = self.spark.read.format(self.format_name)
 
-class CsvDataReader:
-    """Cria dataframe baseado em um arquivo CSV usando o Spark."""
-
-    def __init__(self, spark: SparkSession) -> None:
-        self.spark = spark
-
-    def read(self, path: str, **options: str) -> DataFrame:
-        logger.info("Reading CSV file: %s", path)
-        reader = (
-            self.spark.read.format("csv")
-        )
-
-        skip_rows = options.get("skipRows", options.get("skiprows"))
-        if skip_rows is not None and skip_rows != "":
-            reader = reader.option("skipRows", int(skip_rows))
+        for key, value in options.items():
+            reader = reader.option(key, value)
 
         return reader.load(path)
 
 
-class JsonDataReader:
-    """Cria dataframe baseado em um arquivo JSON usando o Spark."""
+class ExcelReader(BaseReader):
 
-    def __init__(self, spark: SparkSession) -> None:
-        self.spark = spark
+    format_name = "com.crealytics.spark.excel"
 
-    def read(self, path: str, **options: str) -> DataFrame:
-        logger.info("Reading JSON file: %s", path)
-        return (
-            self.spark.read.format("json")
-            .option("inferSchema", options.get("inferSchema", "true"))
-            .option("multiline", options.get("multiline", "true"))
-            .load(path)
-        )
+    def read(self, path, **options):
+
+        options.setdefault("header", True)
+        options.setdefault("inferSchema", True)
+        options.setdefault("dataAddress", "'Sheet1'!A1")
+
+        return super().read(path, **options)
+
+
+class CsvReader(BaseReader):
+
+    format_name = "csv"
+
+    def read(self, path, **options):
+
+        options.setdefault("header", True)
+        options.setdefault("delimiter", ";")
+        options.setdefault("nullValue", "null")
+
+        return super().read(path, **options)
+
+
+class JsonReader(BaseReader):
+
+    format_name = "json"
+
+    def read(self, path, **options):
+
+        options.setdefault("inferSchema", True)
+        options.setdefault("multiline", True)
+
+        return super().read(path, **options)
+
+
+_READERS = {
+    ".csv": CsvReader,
+    ".json": JsonReader,
+    ".xls": ExcelReader,
+    ".xlsx": ExcelReader,
+}
 
 
 class DataReaderFactory:
-    """Fábrica para criar leitores de dados com base na extensão do arquivo."""
 
-    @staticmethod
-    def resolve_reader_class(path: str) -> type[DataReader]:
-        """Retorna a classe do leitor compatível com o arquivo informado."""
+    @classmethod
+    def create(cls, path, spark):
+
         suffix = Path(path).suffix.lower()
-        if suffix == ".xls":
-            return ExcelDataReader
-        if suffix == ".json":
-            return JsonDataReader
-        if suffix == ".csv":
-            return CsvDataReader
-        raise ValueError(f"Unsupported file extension: {suffix}")
 
-    @staticmethod
-    def create(path: str, spark: SparkSession | None = None) -> DataReader:
-        """Cria uma instância do leitor apropriado para o caminho passado."""
-        reader_class = DataReaderFactory.resolve_reader_class(path)
-        if spark is None:
-            return reader_class.__new__(reader_class)
-        return reader_class(spark)
+        try:
+
+            return _READERS[suffix](spark)
+
+        except KeyError:
+
+            raise ValueError(...)

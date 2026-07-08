@@ -8,10 +8,11 @@ from pyspark.sql import SparkSession
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from jobs.job_bronze import JobBronzeData
+from pipelines.jobs.job_bronze_old import JobBronzeData
+from jobs.job_raw import JobRawData
 from jobs.job_silver import JobSilverData
-from pipeline import Pipeline
-from readers import CsvDataReader, DataReaderFactory, ExcelDataReader, JsonDataReader
+from pipelines.pipeline_old import Pipeline
+from pipelines.readers_old import CsvDataReader, DataReaderFactory, ExcelDataReader, JsonDataReader
 
 
 class StubPipeline:
@@ -170,3 +171,35 @@ def test_extract_header_metadata_from_csv_file() -> None:
             "Nome": "PATROCINIO",
             "Codigo Estacao": "A523",
         }
+
+
+def test_prepare_file_csv_inmet_renames_columns_and_writes_cleaned_file() -> None:
+    spark = SparkSession.builder.master("local[1]").appName("test").getOrCreate()
+    try:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            raw_path = Path(tmp_dir) / "sample.csv"
+            raw_path.write_text(
+                "Nome: FRANCA\n"
+                "Codigo Estacao: A708\n"
+                "Data Medicao;PRECIPITACAO TOTAL, DIARIO (AUT)(mm);TEMPERATURA MAXIMA, DIARIA (AUT)(°C);TEMPERATURA MEDIA, DIARIA (AUT)(°C);TEMPERATURA MINIMA, DIARIA (AUT)(°C);UMIDADE RELATIVA DO AR, MEDIA DIARIA (AUT)(%);UMIDADE RELATIVA DO AR, MINIMA DIARIA (AUT)(%)\n"
+                "2025-01-01;1;25;20;15;80;70\n",
+                encoding="utf-8",
+            )
+
+            class SparkStubPipeline:
+                def __init__(self, spark):
+                    self.spark = spark
+
+            job = JobRawData(
+                payload={"inmet_franca": {"path_raw": str(raw_path)}},
+                run=SparkStubPipeline(spark),
+            )
+            result = job.prepare_file_csv_inmet("inmet_franca")
+
+            cleaned_path = Path(result["cleaned_path"])
+            assert cleaned_path.exists()
+            assert cleaned_path.read_text(encoding="utf-8").splitlines()[0] == (
+                "data_medicao;precipitacao_total_mm;temp_max_c;temp_media_c;temp_min_c;umidade_rel_media;umidade_rel_minima"
+            )
+    finally:
+        spark.stop()

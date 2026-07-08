@@ -1,9 +1,10 @@
 import json
 import logging
-from pathlib import Path
-import unicodedata
 import re
-from pipeline import Pipeline
+import unicodedata
+from pathlib import Path
+
+from pipelines.pipeline_old import Pipeline
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -27,18 +28,9 @@ class JobSilverData:
         self.job_inmet_patrocinio()
         self.job_inmet_franca()
 
-
-    def _prepare_payload_sources(self, payload: dict) -> None:
-        """Prepara arquivos brutos com preâmbulo de metadados para o fluxo silver."""
-        for source_name, source_payload in payload.items():
-            if not isinstance(source_payload, dict):
-                continue
-            raw_path = source_payload.get("path_raw")
-            if not raw_path:
-                continue
-            self._prepare_source_metadata(source_payload, source_name=source_name)
-
-    def _prepare_source_metadata(self, source_payload: dict, source_name: str) -> None:
+    def _prepare_source_metadata(
+        self, source_payload: dict, source_name: str | None = None
+    ) -> None:
         """Extrai metadados de cabeçalho e cria uma cópia limpa do arquivo bruto."""
         raw_path = source_payload.get("path_raw")
         if not raw_path:
@@ -46,16 +38,57 @@ class JobSilverData:
 
         source_path = Path(raw_path)
         if not source_path.exists():
-            logger.warning("Raw source not found for silver metadata preparation: %s", source_path)
+            logger.warning(
+                "Raw source not found for silver metadata preparation: %s",
+                source_path,
+            )
             return
 
-        metadata_path = self._extract_header_metadata(source_path, output_dir=source_payload.get("metadata_dir"))
-        cleaned_path = self._write_cleaned_source_file(source_path, output_dir=source_payload.get("metadata_dir"))
+        metadata_path = self._extract_header_metadata(
+            source_path, output_dir=source_payload.get("metadata_dir")
+        )
+        cleaned_path = self._write_cleaned_source_file(
+            source_path, output_dir=source_payload.get("metadata_dir")
+        )
         source_payload["metadata_path"] = str(metadata_path)
         source_payload["path_raw_cleaned"] = str(cleaned_path)
-        logger.info("Prepared cleaned source file for %s at %s", source_name, cleaned_path)
+        logger.info(
+            "Prepared cleaned source file for %s at %s",
+            source_name or source_path.stem,
+            cleaned_path,
+        )
 
-    def _write_cleaned_source_file(self, raw_path: Path | str, output_dir: Path | str | None = None) -> Path:
+    def _extract_header_metadata(
+        self, raw_path: Path | str, output_dir: Path | str | None = None
+    ) -> Path:
+        """Extrai metadados de um arquivo bruto em formato chave: valor para um JSON."""
+        source_path = Path(raw_path)
+        if not source_path.exists():
+            raise FileNotFoundError(f"Source file not found: {source_path}")
+
+        metadata: dict[str, str] = {}
+        for line in source_path.read_text(encoding="utf-8").splitlines():
+            stripped = line.strip()
+            if not stripped or ":" not in stripped:
+                continue
+            key, value = stripped.split(":", 1)
+            if key and value.strip():
+                metadata[key.strip()] = value.strip()
+
+        output_folder = (
+            Path(output_dir) if output_dir is not None else source_path.parent
+        )
+        output_folder.mkdir(parents=True, exist_ok=True)
+        metadata_path = output_folder / f"{source_path.stem}.metadata.json"
+        metadata_path.write_text(
+            json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        logger.info("Extracted %s metadata fields from %s", len(metadata), source_path)
+        return metadata_path
+
+    def _write_cleaned_source_file(
+        self, raw_path: Path | str, output_dir: Path | str | None = None
+    ) -> Path:
         """Cria uma cópia limpa do arquivo bruto removendo o bloco de metadados de preâmbulo."""
         source_path = Path(raw_path)
         if not source_path.exists():
@@ -73,7 +106,9 @@ class JobSilverData:
             break
 
         cleaned_lines = [line.rstrip() for line in lines[start_index:]]
-        output_folder = Path(output_dir) if output_dir is not None else source_path.parent
+        output_folder = (
+            Path(output_dir) if output_dir is not None else source_path.parent
+        )
         output_folder.mkdir(parents=True, exist_ok=True)
         cleaned_path = output_folder / f"{source_path.stem}.cleaned{source_path.suffix}"
         cleaned_path.write_text("\n".join(cleaned_lines) + "\n", encoding="utf-8")
@@ -114,17 +149,27 @@ class JobSilverData:
     def _clean_numeric_column(self, df: DataFrame, column: str) -> DataFrame:
         """Converte coluna para numérica e trata valores inválidos."""
         return (
-            df.withColumn(column, F.regexp_replace(F.col(column).cast("string"), r"[^0-9,.-]", ""))
+            df.withColumn(
+                column, F.regexp_replace(F.col(column).cast("string"), r"[^0-9,.-]", "")
+            )
             .withColumn(column, F.regexp_replace(F.col(column), ",", "."))
-            .withColumn(column, F.when(F.col(column) == "", None).otherwise(F.col(column).cast("double")))
+            .withColumn(
+                column,
+                F.when(F.col(column) == "", None).otherwise(
+                    F.col(column).cast("double")
+                ),
+            )
         )
 
-    def _clean_date_column(self, df: DataFrame, column: str, format_str: str = "dd/MM/yyyy") -> DataFrame:
+    def _clean_date_column(
+        self, df: DataFrame, column: str, format_str: str = "dd/MM/yyyy"
+    ) -> DataFrame:
         """Converte coluna para data e trata valores inválidos."""
         return df.withColumn(
             column,
-            F.when(F.col(column).isNull() | (F.trim(F.col(column)) == ""), None)
-            .otherwise(F.to_date(F.col(column).cast("string"), format_str)),
+            F.when(
+                F.col(column).isNull() | (F.trim(F.col(column)) == ""), None
+            ).otherwise(F.to_date(F.col(column).cast("string"), format_str)),
         )
 
     def job_ipca(self, payload: dict) -> DataFrame:
@@ -136,7 +181,10 @@ class JobSilverData:
 
         df = self.run.read_parquet(path_bronze)
         if df is None:
-            logger.warning("No bronze dataframe available for IPCA at %s; skipping silver transformation", path_bronze)
+            logger.warning(
+                "No bronze dataframe available for IPCA at %s; skipping silver transformation",
+                path_bronze,
+            )
             return None
 
         df = (
@@ -160,7 +208,10 @@ class JobSilverData:
 
         df = self.run.read_parquet(path_bronze)
         if df is None:
-            logger.warning("No bronze dataframe available for SELIC at %s; skipping silver transformation", path_bronze)
+            logger.warning(
+                "No bronze dataframe available for SELIC at %s; skipping silver transformation",
+                path_bronze,
+            )
             return None
 
         df = (
@@ -184,7 +235,10 @@ class JobSilverData:
 
         df = self.run.read_parquet(path_bronze)
         if df is None:
-            logger.warning("No bronze dataframe available for Robusta at %s; skipping silver transformation", path_bronze)
+            logger.warning(
+                "No bronze dataframe available for Robusta at %s; skipping silver transformation",
+                path_bronze,
+            )
             return None
 
         df = (
@@ -210,7 +264,10 @@ class JobSilverData:
 
         df = self.run.read_parquet(path_bronze)
         if df is None:
-            logger.warning("No bronze dataframe available for Arabica at %s; skipping silver transformation", path_bronze)
+            logger.warning(
+                "No bronze dataframe available for Arabica at %s; skipping silver transformation",
+                path_bronze,
+            )
             return None
 
         df = (
@@ -239,22 +296,25 @@ class JobSilverData:
             "temp_media_c",
             "temp_min_c",
             "umidade_rel_media",
-            "umidade_rel_minima"
+            "umidade_rel_minima",
         ]
         logger.info("Standardizing INMET Patrocínio data from %s", path_bronze)
 
-        df = self.run.read_parquet(path_bronze,
+        df = self.run.read_parquet(
+            path_bronze,
             # options={
             # "header": "false",
             # #   "inferSchema": "true",
             #     "separator": ";"}
-                )
+        )
         if df is None:
-            logger.warning("No bronze dataframe available for INMET Patrocínio at %s; skipping silver transformation", path_bronze)
+            logger.warning(
+                "No bronze dataframe available for INMET Patrocínio at %s; skipping silver transformation",
+                path_bronze,
+            )
             return None
 
         # df = self.sanitize_column_name(df, col_names)
-
 
         # df = (
         #     df.withColumnRenamed("Nome: PATROCINIO", "metadata")
@@ -266,7 +326,7 @@ class JobSilverData:
         # self.run.write_parquet(df=df, output_path=path_silver, partitions=["fonte"])
         # df = df.filter(F.col("data").isNotNull())  # Filtra linhas com data nula
 
-        df.show(5,truncate=False)  # Exibe o DataFrame para depuração
+        df.show(5, truncate=False)  # Exibe o DataFrame para depuração
         return df
 
     def job_inmet_franca(self) -> DataFrame:
@@ -276,22 +336,32 @@ class JobSilverData:
         # self._prepare_source_metadata(payload["inmet_franca"], source_name="inmet_franca")
         logger.info("Standardizing INMET Franca data from %s", path_bronze)
 
-        df = self.run.read_parquet(path_bronze)
+        df = self.run.read_parquet(
+            path_bronze,
+            options={
+                "header": "true",
+                "delimiter": ";",
+                "inferSchema": "true",
+            },
+        )
         if df is None:
-            logger.warning("No bronze dataframe available for INMET Franca at %s; skipping silver transformation", path_bronze)
+            logger.warning(
+                "No bronze dataframe available for INMET Franca at %s; skipping silver transformation",
+                path_bronze,
+            )
             return None
 
         col_names = [
-        "data_medicao",
-        "precipitacao_total_mm",
-        "temp_max_c",
-        "temp_media_c",
-        "temp_min_c",
-        "umidade_rel_media",
-        "umidade_rel_minima"
-    ]
+            "data_medicao",
+            "precipitacao_total_mm",
+            "temp_max_c",
+            "temp_media_c",
+            "temp_min_c",
+            "umidade_rel_media",
+            "umidade_rel_minima",
+        ]
 
-        df = self._cleane_csv_header(df, col_names)
+        # df = self._cleane_csv_header(df, col_names)
         # df = (
         #     df.withColumnRenamed("Nome: FRANCA", "metadata")
         #     .withColumn("fonte", F.lit("INMET_FRANCA"))
@@ -301,21 +371,31 @@ class JobSilverData:
         # )
 
         # self.run.write_parquet(df=df, output_path=path_silver, partitions=["fonte"])
-        df.show(5,truncate=False)
+        df.show(5, truncate=False)
         return df
 
-    def _cleane_csv_header(self,df, col_names=list[str]):
+    def _cleane_csv_header(self, df: DataFrame, col_names: list[str]) -> DataFrame:
+        """Renomeia e, quando necessário, separa as colunas de um CSV com base nos nomes recebidos."""
+        if not col_names:
+            return df
 
-        # 2. Cria um ID sequencial para conseguir identificar e pular as linhas de metadados
-        indexed_df = df.withColumn("row_id", F.monotonically_increasing_id())
-        # 3. Filtra mantendo apenas as linhas de dados (linha 11 em diante)
-        data_lines_df = indexed_df.filter("row_id >= 1")
+        if len(df.columns) == len(col_names):
+            print("###entrei aqui.. ###")
+            return df.toDF(*col_names)
 
-        data_lines_df.show()
-        # 4. Define os nomes das suas colunas
+        if len(df.columns) == 1:
+            # 2. Cria um ID sequencial para conseguir identificar e pular as linhas de metadados
+            indexed_df = df.withColumn("row_id", F.monotonically_increasing_id())
 
+            # 3. Filtra mantendo apenas as linhas de dados (linha 1 em diante)
+            data_lines_df = indexed_df.filter("row_id >= 1")
 
-        # 5. Divide a string única pelo delimitador ';' e mapeia para as novas colunas
-        return data_lines_df.select(
-            *[F.split(F.col("value"), ";")[i].alias(col_names[i]) for i in range(len(col_names))]
-        )
+            source_col = data_lines_df.columns
+            parsed_columns = [
+                F.trim(F.split(F.col(source_col).cast("string"), ";")[idx]).alias(name)
+                for idx, name in enumerate(col_names)
+            ]
+            return df.select(*parsed_columns)
+
+        renamed_columns = col_names[: len(df.columns)]
+        return df.toDF(*renamed_columns)

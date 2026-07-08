@@ -17,6 +17,12 @@ class BaseReader:
 
         return reader.load(path)
 
+class ParquetReader(BaseReader):
+    format_name = "parquet"
+    def read(self, path, **options):
+        options.setdefault("header", True)
+        options.setdefault("inferSchema", True)
+        return super().read(path, **options)
 
 class ExcelReader(BaseReader):
 
@@ -61,6 +67,7 @@ _READERS = {
     ".json": JsonReader,
     ".xls": ExcelReader,
     ".xlsx": ExcelReader,
+    ".parquet":ParquetReader,
 }
 
 

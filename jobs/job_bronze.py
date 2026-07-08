@@ -8,7 +8,7 @@ from pathlib import Path
 
 from pipeline import Pipeline
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import lit
+from pyspark.sql.functions import lit,col, to_date, trim, when
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +87,8 @@ class JobBronzeData:
             options=self._build_read_options(source),
         )
 
+        df = self._normalize_dataframe_columns(df)
+
         metadata = self._load_metadata(source_name)
 
         if metadata:
@@ -95,7 +97,7 @@ class JobBronzeData:
         self.run.write_parquet(
             df=df,
             output_path=source["path_bronze"],
-            partitions=source.get("partitions"),
+            # partitions=source.get("partitions"),
         )
 
         logger.info(
@@ -212,3 +214,40 @@ class JobBronzeData:
         )
 
         return column.strip("_")
+
+    def _normalize_dataframe_columns(
+        self,
+        df: DataFrame,
+    ) -> DataFrame:
+        """
+        Normaliza os nomes das colunas do DataFrame para snake_case.
+
+        Parameters
+        ----------
+        df
+            DataFrame Spark.
+
+        Returns
+        -------
+        DataFrame
+            DataFrame com colunas renomeadas.
+        """
+
+        for column in df.columns:
+            normalized = self._normalize_column_name(column)
+
+            if normalized != column:
+                df = df.withColumnRenamed(column, normalized)
+
+        return df
+
+    # def _clean_date_column(
+    #     self, df: DataFrame, column: str, format_str: str = "dd/MM/yyyy"
+    # ) -> DataFrame:
+    #     """Converte coluna para data e trata valores inválidos."""
+    #     return df.withColumn(
+    #         column,
+    #         when(
+    #             col(column).isNull() | (trim(col(column)) == ""), None
+    #         ).otherwise(to_date(col(column).cast("string"), format_str)),
+    #     )

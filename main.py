@@ -4,6 +4,7 @@ from logging_config import configure_logging
 
 from jobs.job_bronze import JobBronzeData
 from pipeline import Pipeline
+from jobs.job_silver import JobSilverData
 
 configure_logging("INFO")
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ payload = {
     },
     "robusta": {
         "dataAddress": "'Plan 1'!A4",  # !Atencao ao nome da planilha
-        "partitions": ["Data"],
+        "partitions": ["data"],
         "path_raw": "../storage/raw/ROBUSTA_CEPEA_20260706165657.xls",
         "path_bronze": "../storage/bronze/cepea/robusta/robusta_cepea.parquet",
         "path_silver": "../storage/silver/cepea/robusta/robusta_cepea.parquet",
@@ -39,7 +40,7 @@ payload = {
     },
     "arabica": {
         "dataAddress": "'Plan 1'!A4",  # !Atencao ao nome da planilha
-        "partitions": ["Data"],
+        "partitions": ["data"],
         "path_raw": "../storage/raw/ARABICA_CEPEA_20260706165648.xls",
         "path_bronze": "../storage/bronze/cepea/arabica/arabica_cepa.parquet",
         "path_silver": "../storage/silver/cepea/arabica/arabica_cepa.parquet",
@@ -94,11 +95,10 @@ def main() -> None:
     #     start_date=payload["ipca"]["start_date"],
     #     end_date=payload["ipca"]["end_date"],
     # )
-    bronze = JobBronzeData(
-        payload=payload,
-        run=pipeline,
-    )
-
+    # bronze = JobBronzeData(
+    #     payload=payload,
+    #     run=pipeline,
+    # )
     #
     # Executa todas as fontes
     # bronze.run_all()
@@ -111,6 +111,14 @@ def main() -> None:
     # bronze.process_source("ipca")
     # bronze.process_source("inmet_franca")
     # bronze.process_source("inmet_patrocinio")
+
+    #------[Silver]-----
+    silver = JobSilverData(
+        payload=payload,
+        run=pipeline,
+    )
+    silver.process_data("inmet_franca")
+    # silver.process_data("robusta")
 
     logger.info("Pipeline finished successfully.")
 

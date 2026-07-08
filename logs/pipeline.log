@@ -883,3 +883,86 @@
 2026-07-07 22:22:28,493 | INFO | jobs.job_bronze | Bronze ingestion finished.
 2026-07-07 22:22:28,493 | INFO | __main__ | Pipeline finished successfully.
 2026-07-07 22:22:28,494 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 22:34:53,015 | INFO | __main__ | Starting pipeline...
+2026-07-07 22:34:53,016 | INFO | spark_session | Creating Spark session
+2026-07-07 22:35:04,515 | INFO | jobs.job_bronze | Reading source 'robusta' from ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-07 22:35:04,515 | INFO | pipeline | Reading dataset: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-07 22:35:07,017 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 22:35:48,850 | INFO | jobs.job_bronze | Bronze dataset successfully created: robusta
+2026-07-07 22:35:48,857 | INFO | jobs.job_bronze | Reading source 'arabica' from ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-07 22:35:48,857 | INFO | pipeline | Reading dataset: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-07 22:35:49,069 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-07 22:36:34,780 | INFO | jobs.job_bronze | Bronze dataset successfully created: arabica
+2026-07-07 22:36:34,781 | INFO | __main__ | Pipeline finished successfully.
+2026-07-07 22:36:34,781 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 22:41:21,133 | INFO | __main__ | Starting pipeline...
+2026-07-07 22:41:21,133 | INFO | spark_session | Creating Spark session
+2026-07-07 22:41:31,736 | INFO | jobs.job_bronze | Starting Bronze ingestion...
+2026-07-07 22:41:31,736 | INFO | jobs.job_bronze | Reading source 'ipca' from ../storage/raw/serie_433.json
+2026-07-07 22:41:31,736 | INFO | pipeline | Reading dataset: ../storage/raw/serie_433.json
+2026-07-07 22:41:33,708 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-07 22:41:36,020 | INFO | jobs.job_bronze | Bronze dataset successfully created: ipca
+2026-07-07 22:41:36,023 | INFO | jobs.job_bronze | Reading source 'selic' from ../storage/raw/serie_11.json
+2026-07-07 22:41:36,023 | INFO | pipeline | Reading dataset: ../storage/raw/serie_11.json
+2026-07-07 22:41:36,168 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/bcb/selic/serie_11.parquet
+2026-07-07 22:41:36,640 | INFO | jobs.job_bronze | Bronze dataset successfully created: selic
+2026-07-07 22:41:36,643 | INFO | jobs.job_bronze | Reading source 'robusta' from ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-07 22:41:36,643 | INFO | pipeline | Reading dataset: ../storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-07 22:41:37,643 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 22:41:40,593 | INFO | jobs.job_bronze | Bronze dataset successfully created: robusta
+2026-07-07 22:41:40,594 | INFO | jobs.job_bronze | Reading source 'arabica' from ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-07 22:41:40,594 | INFO | pipeline | Reading dataset: ../storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-07 22:41:40,838 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-07 22:41:43,629 | INFO | jobs.job_bronze | Bronze dataset successfully created: arabica
+2026-07-07 22:41:43,631 | INFO | jobs.job_bronze | Reading source 'inmet_patrocinio' from ../storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-07 22:41:43,631 | INFO | pipeline | Reading dataset: ../storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-07 22:41:44,583 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-07 22:41:45,311 | INFO | jobs.job_bronze | Bronze dataset successfully created: inmet_patrocinio
+2026-07-07 22:41:45,312 | INFO | jobs.job_bronze | Reading source 'inmet_franca' from ../storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-07 22:41:45,312 | INFO | pipeline | Reading dataset: ../storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-07 22:41:45,727 | INFO | pipeline | Writing parquet dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 22:41:46,238 | INFO | jobs.job_bronze | Bronze dataset successfully created: inmet_franca
+2026-07-07 22:41:46,240 | INFO | jobs.job_bronze | Bronze ingestion finished.
+2026-07-07 22:41:46,240 | INFO | __main__ | Pipeline finished successfully.
+2026-07-07 22:41:46,240 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 22:59:14,551 | INFO | __main__ | Starting pipeline...
+2026-07-07 22:59:14,552 | INFO | spark_session | Creating Spark session
+2026-07-07 22:59:24,722 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:00:30,835 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:00:30,835 | INFO | spark_session | Creating Spark session
+2026-07-07 23:00:41,599 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:01:17,089 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:01:17,089 | INFO | spark_session | Creating Spark session
+2026-07-07 23:01:26,998 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 23:01:26,999 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:04:34,786 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:04:34,787 | INFO | spark_session | Creating Spark session
+2026-07-07 23:04:45,733 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 23:04:50,096 | INFO | __main__ | Pipeline finished successfully.
+2026-07-07 23:04:50,097 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:19:40,759 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:19:40,760 | INFO | spark_session | Creating Spark session
+2026-07-07 23:19:51,297 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 23:19:53,639 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:20:13,950 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:20:13,950 | INFO | spark_session | Creating Spark session
+2026-07-07 23:20:24,040 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 23:20:26,386 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:21:28,836 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:21:28,837 | INFO | spark_session | Creating Spark session
+2026-07-07 23:21:38,850 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 23:21:41,139 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:24:51,956 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:24:51,956 | INFO | spark_session | Creating Spark session
+2026-07-07 23:25:02,058 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 23:25:05,914 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:25:30,251 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:25:30,251 | INFO | spark_session | Creating Spark session
+2026-07-07 23:25:40,181 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-07 23:25:46,109 | INFO | __main__ | Pipeline finished successfully.
+2026-07-07 23:25:46,109 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-07 23:30:30,583 | INFO | __main__ | Starting pipeline...
+2026-07-07 23:30:30,583 | INFO | spark_session | Creating Spark session
+2026-07-07 23:30:41,243 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-07 23:30:45,524 | INFO | __main__ | Pipeline finished successfully.
+2026-07-07 23:30:45,525 | INFO | py4j.clientserver | Closing down clientserver connection

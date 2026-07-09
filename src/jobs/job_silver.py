@@ -2,10 +2,13 @@ import logging
 
 from pipeline import Pipeline
 from pyspark.sql import DataFrame
-from schemas.schema import SCHEMAS
 from pyspark.sql import functions as F
-from transformations import (_clean_date_column, _clean_null_values,
-_clean_numeric_column)
+from app.src.schemas.schema import SCHEMAS
+from app.src.pipeline.transformations import (
+    _clean_date_column,
+    _clean_null_values,
+    _clean_numeric_column,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +26,7 @@ class JobSilverData:
         logger.info("Starting Silver Process...")
 
         for source_name in self.payload:
-            self.process_source(source_name)
+            self.process_data(source_name)
 
         logger.info("Silver Process finished.")
 

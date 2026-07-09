@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-from pipelines.pipeline_old import Pipeline
+from app.pipeline_old import Pipeline
 
 
 class JobRawData:

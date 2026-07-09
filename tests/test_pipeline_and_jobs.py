@@ -8,11 +8,11 @@ from pyspark.sql import SparkSession
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from pipelines.jobs.job_bronze_old import JobBronzeData
-from jobs.job_raw import JobRawData
-from jobs.job_silver import JobSilverData
-from pipelines.pipeline_old import Pipeline
-from pipelines.readers_old import CsvDataReader, DataReaderFactory, ExcelDataReader, JsonDataReader
+from app.jobs.job_bronze_old import JobBronzeData
+from app.src.jobs.job_raw import JobRawData
+from app.src.jobs.job_silver import JobSilverData
+from app.pipeline_old import Pipeline
+from app.readers_old import CsvDataReader, DataReaderFactory, ExcelDataReader, JsonDataReader
 
 
 class StubPipeline:

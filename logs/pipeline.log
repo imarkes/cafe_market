@@ -1079,3 +1079,105 @@
 2026-07-08 22:38:18,078 | INFO | jobs.job_silver | Silver dataset successfully created: ipca
 2026-07-08 22:38:18,083 | INFO | __main__ | Pipeline finished successfully.
 2026-07-08 22:38:18,083 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 19:14:05,660 | INFO | __main__ | Starting pipeline...
+2026-07-09 19:14:05,660 | INFO | spark_session | Creating Spark session
+2026-07-09 19:14:15,007 | INFO | jobs.job_silver | Starting Silver Process...
+2026-07-09 19:14:15,008 | INFO | pipeline | Reading dataset: ../storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-09 19:14:18,654 | INFO | pipeline | Writing parquet dataset: ../storage/silver/bcb/ipca/serie_433.parquet
+2026-07-09 19:14:23,227 | INFO | jobs.job_silver | Silver dataset successfully created: ipca
+2026-07-09 19:14:23,230 | INFO | pipeline | Reading dataset: ../storage/bronze/bcb/selic/serie_11.parquet
+2026-07-09 19:14:23,562 | INFO | pipeline | Writing parquet dataset: ../storage/silver/bcb/selic/serie_11.parquet
+2026-07-09 19:14:27,872 | INFO | jobs.job_silver | Silver dataset successfully created: selic
+2026-07-09 19:14:27,873 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-09 19:14:28,276 | INFO | pipeline | Writing parquet dataset: ../storage/silver/cepea/robusta/robusta_cepea.parquet
+2026-07-09 19:15:10,881 | INFO | jobs.job_silver | Silver dataset successfully created: robusta
+2026-07-09 19:15:10,883 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-09 19:15:11,345 | INFO | pipeline | Writing parquet dataset: ../storage/silver/cepea/arabica/arabica_cepa.parquet
+2026-07-09 19:15:56,566 | INFO | jobs.job_silver | Silver dataset successfully created: arabica
+2026-07-09 19:15:56,569 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 19:15:58,697 | INFO | pipeline | Writing parquet dataset: ../storage/silver/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 19:16:08,622 | INFO | jobs.job_silver | Silver dataset successfully created: inmet_patrocinio
+2026-07-09 19:16:08,624 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-09 19:16:09,975 | INFO | pipeline | Writing parquet dataset: ../storage/silver/inmet/franca/inmet_franca.parquet
+2026-07-09 19:16:18,048 | INFO | jobs.job_silver | Silver dataset successfully created: inmet_franca
+2026-07-09 19:16:18,049 | INFO | jobs.job_silver | Silver Process finished.
+2026-07-09 19:16:18,049 | INFO | __main__ | Pipeline finished successfully.
+2026-07-09 19:16:18,050 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 20:11:16,626 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:12:12,998 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:12:39,353 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:13:28,869 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:13:40,646 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:13:40,646 | INFO | __main__ | Pipeline finished successfully.
+2026-07-09 20:14:45,007 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:14:45,007 | INFO | __main__ | Pipeline finished successfully.
+2026-07-09 20:14:52,354 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:14:59,186 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:15:28,389 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:18:43,729 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:18:43,729 | INFO | jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-09 20:19:54,797 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:19:54,797 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:20:27,497 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:20:27,497 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:20:46,771 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:20:46,772 | INFO | __main__ | Pipeline finished successfully.
+2026-07-09 20:22:46,280 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:22:46,280 | INFO | jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-09 20:22:54,245 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:22:54,245 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:25:23,876 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:25:23,876 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:27:08,220 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:27:08,220 | INFO | jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 20:27:12,641 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:28:24,944 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:28:24,944 | INFO | jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 20:28:28,412 | INFO | jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 20:28:49,239 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:28:49,239 | INFO | jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 20:28:52,708 | INFO | jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 20:28:52,778 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:31:07,108 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:31:07,108 | INFO | jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 20:31:10,742 | INFO | jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 20:31:10,804 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:32:46,439 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:32:46,440 | INFO | spark_session | Creating Spark session
+2026-07-09 20:32:54,505 | INFO | jobs.job_silver | Starting Silver Process...
+2026-07-09 20:32:54,505 | INFO | pipeline | Reading dataset: ../storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-09 20:32:57,754 | INFO | pipeline | Writing parquet dataset: ../storage/silver/bcb/ipca/serie_433.parquet
+2026-07-09 20:33:01,574 | INFO | jobs.job_silver | Silver dataset successfully created: ipca
+2026-07-09 20:33:01,577 | INFO | pipeline | Reading dataset: ../storage/bronze/bcb/selic/serie_11.parquet
+2026-07-09 20:33:01,916 | INFO | pipeline | Writing parquet dataset: ../storage/silver/bcb/selic/serie_11.parquet
+2026-07-09 20:33:06,027 | INFO | jobs.job_silver | Silver dataset successfully created: selic
+2026-07-09 20:33:06,030 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-09 20:33:06,432 | INFO | pipeline | Writing parquet dataset: ../storage/silver/cepea/robusta/robusta_cepea.parquet
+2026-07-09 20:33:35,556 | INFO | jobs.job_silver | Silver dataset successfully created: robusta
+2026-07-09 20:33:35,557 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-09 20:33:35,956 | INFO | pipeline | Writing parquet dataset: ../storage/silver/cepea/arabica/arabica_cepa.parquet
+2026-07-09 20:34:15,840 | INFO | jobs.job_silver | Silver dataset successfully created: arabica
+2026-07-09 20:34:15,840 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 20:34:17,093 | INFO | pipeline | Writing parquet dataset: ../storage/silver/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 20:34:25,585 | INFO | jobs.job_silver | Silver dataset successfully created: inmet_patrocinio
+2026-07-09 20:34:25,587 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-09 20:34:26,839 | INFO | pipeline | Writing parquet dataset: ../storage/silver/inmet/franca/inmet_franca.parquet
+2026-07-09 20:34:34,625 | INFO | jobs.job_silver | Silver dataset successfully created: inmet_franca
+2026-07-09 20:34:34,626 | INFO | jobs.job_silver | Silver Process finished.
+2026-07-09 20:34:34,626 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 20:41:55,836 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:41:55,836 | INFO | spark_session | Creating Spark session
+2026-07-09 20:42:03,919 | INFO | jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 20:42:09,204 | INFO | jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 20:42:09,270 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:42:09,773 | INFO | jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-09 20:42:09,812 | INFO | jobs.job_gold | Creating table: cafe_market_analysis.sql
+2026-07-09 20:42:09,813 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 20:43:07,151 | INFO | __main__ | Starting pipeline...
+2026-07-09 20:43:07,152 | INFO | spark_session | Creating Spark session
+2026-07-09 20:43:15,145 | INFO | jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 20:43:18,509 | INFO | jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 20:43:18,568 | INFO | jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 20:43:19,094 | INFO | jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-09 20:43:19,131 | INFO | jobs.job_gold | Creating table: market_analysis.sql
+2026-07-09 20:43:19,213 | INFO | py4j.clientserver | Closing down clientserver connection

@@ -3,15 +3,15 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from downloader import TaxDataDownloader
+from app.src.pipeline.downloader import TaxDataDownloader
 from pyspark.sql import DataFrame, SparkSession
-from readers import DataReaderFactory
-from spark_session import create_spark_session
+from app.src.utils.readers import DataReaderFactory
+from app.src.utils.spark_session import create_spark_session
 
 logger = logging.getLogger(__name__)
 
 
-class Pipeline:
+class DataManager:
     """
     Camada de abstração para operações de leitura e escrita de dados.
 

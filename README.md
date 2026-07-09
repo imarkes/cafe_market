@@ -38,3 +38,34 @@ df.show(5)
 ## Logs
 
 Os logs são emitidos no console e em [pipelines/logs/pipeline.log](logs/pipeline.log).
+
+
+Gold
+
+             dim_calendario
+                    |
+                    |
+                    |
+        +-----------+------------+
+        |                        |
+        |                        |
+fact_preco_cafe        fact_clima
+        |                        |
+        +-----------+------------+
+                    |
+             gold_indicadores
+MOdelo Fisico
+                   dim_calendario
+                          |
+                          |
+      +-------------------+------------------+
+      |                   |                  |
+      |                   |                  |
+fact_preco        fact_clima        fact_indicadores
+      \                  |                 /
+       \                 |                /
+        \                |               /
+         \               |              /
+          +--------------+-------------+
+                         |
+               gold_indicadores_cafe

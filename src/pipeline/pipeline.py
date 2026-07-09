@@ -1,10 +1,12 @@
 import logging
 
-from logging_config import configure_logging
+from app.src.utils.logging_config import configure_logging
 
-from jobs.job_bronze import JobBronzeData
-from pipeline import Pipeline
-from jobs.job_silver import JobSilverData
+from app.src.jobs.job_bronze import JobBronzeData
+from app.src.pipeline.manager import DataManager
+from app.src.jobs.job_silver import JobSilverData
+from app.src.jobs.job_gold import JobGoldData
+
 
 configure_logging("INFO")
 logger = logging.getLogger(__name__)
@@ -63,7 +65,7 @@ payload = {
         "path_gold": "../storage/gold/inmet/franca/inmet_franca.parquet",
     },
 }
-def main() -> None:
+def pipeline() -> None:
     """
     Ponto de entrada da pipeline.
 
@@ -80,9 +82,9 @@ def main() -> None:
 
     logger.info("Starting pipeline...")
 
-    pipeline = Pipeline()
+    manager = DataManager()
 
-    #
+    ##------[Ingestion]-----
     # Download opcional das séries do Banco Central
     #
     # pipeline.download_tax_series(
@@ -95,6 +97,7 @@ def main() -> None:
     #     start_date=payload["ipca"]["start_date"],
     #     end_date=payload["ipca"]["end_date"],
     # )
+    #------[Bronze]-----
     # bronze = JobBronzeData(
     #     payload=payload,
     #     run=pipeline,
@@ -102,8 +105,7 @@ def main() -> None:
     #
     # Executa todas as fontes
     # bronze.run_all()
-
-    ####
+    ##
     # Executa sob demanda
     # bronze.process_source("robusta")
     # bronze.process_source("arabica")
@@ -117,11 +119,17 @@ def main() -> None:
     #     payload=payload,
     #     run=pipeline,
     # )
+    # silver.run_all()
     # silver.process_data("inmet_franca")
     # silver.process_data("ipca")
     # silver.process_data("robusta")
 
-    logger.info("Pipeline finished successfully.")
+    #------[Gold]-----
+    gold = JobGoldData(
+        payload=payload,
+    )
+    gold.create_datawarehouse()
+    # logger.info("Pipeline finished successfully.")
 
 if __name__ == "__main__":
-    main()
+    pipeline()

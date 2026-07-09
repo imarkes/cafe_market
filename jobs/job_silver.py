@@ -4,7 +4,8 @@ from pipeline import Pipeline
 from pyspark.sql import DataFrame
 from schemas.schema import SCHEMAS
 from pyspark.sql import functions as F
-from transformations import _clean_date_column, _clean_numeric_column,_select_columns
+from transformations import (_clean_date_column, _clean_null_values,
+_clean_numeric_column)
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +55,7 @@ class JobSilverData:
                     column,
                     F.col(column).cast(dtype),
                 )
+        df = _clean_null_values(df, list(schema.keys()))
         df = df.select(*schema.keys())
 
         self.run.write_parquet(

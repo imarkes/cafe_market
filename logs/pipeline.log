@@ -1065,3 +1065,17 @@
 2026-07-08 22:27:09,707 | INFO | jobs.job_silver | Silver dataset successfully created: selic
 2026-07-08 22:27:09,709 | INFO | __main__ | Pipeline finished successfully.
 2026-07-08 22:27:09,710 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:35:46,728 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:35:46,728 | INFO | spark_session | Creating Spark session
+2026-07-08 22:35:56,443 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 22:36:01,320 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:37:45,424 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:37:45,424 | INFO | spark_session | Creating Spark session
+2026-07-08 22:37:55,476 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 22:38:00,869 | INFO | pipeline | Writing parquet dataset: ../storage/silver/inmet/franca/inmet_franca.parquet
+2026-07-08 22:38:17,015 | INFO | jobs.job_silver | Silver dataset successfully created: inmet_franca
+2026-07-08 22:38:17,020 | INFO | pipeline | Reading dataset: ../storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-08 22:38:17,429 | INFO | pipeline | Writing parquet dataset: ../storage/silver/bcb/ipca/serie_433.parquet
+2026-07-08 22:38:18,078 | INFO | jobs.job_silver | Silver dataset successfully created: ipca
+2026-07-08 22:38:18,083 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 22:38:18,083 | INFO | py4j.clientserver | Closing down clientserver connection

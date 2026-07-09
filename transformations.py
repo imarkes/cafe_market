@@ -61,5 +61,62 @@ def _clean_date_column(
     )
 )
 
-def _select_columns(df:DataFrame, column):
-    return df.select(column)
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
+
+
+DEFAULT_NULL_VALUES = (
+    "",
+    " ",
+    "null",
+    "NULL",
+    "None",
+    "none",
+    "NaN",
+    "nan",
+    "N/A",
+    "n/a",
+    "-",
+)
+
+
+def _clean_null_values(
+    df: DataFrame,
+    columns: list[str] | None = None,
+    null_values: tuple[str, ...] = DEFAULT_NULL_VALUES,
+) -> DataFrame:
+    """
+    Padroniza representações textuais de valores nulos para NULL.
+
+    Parameters
+    ----------
+    df
+        DataFrame Spark.
+
+    columns
+        Lista de colunas a serem tratadas.
+        Se None, todas as colunas serão processadas.
+
+    null_values
+        Valores que devem ser convertidos para NULL.
+
+    Returns
+    -------
+    DataFrame
+    """
+
+    columns = columns or df.columns
+
+    for column in columns:
+
+        df = df.withColumn(
+            column,
+            F.when(
+                F.lower(F.trim(F.col(column).cast("string"))).isin(
+                    *[v.lower().strip() for v in null_values]
+                ),
+                F.lit(None),
+            ).otherwise(F.col(column)),
+        )
+
+    return df

@@ -2,18 +2,11 @@ import logging
 
 from pipeline import Pipeline
 from pyspark.sql import DataFrame
+from schemas.schema import SCHEMAS
 from pyspark.sql import functions as F
-from pyspark.sql.types import (
-    DateType,
-    DoubleType,
-    IntegerType,
-    LongType,
-    StringType,
-    TimestampType,
-)
+from transformations import _clean_date_column, _clean_numeric_column,_select_columns
 
 logger = logging.getLogger(__name__)
-
 
 class JobSilverData:
     """Padroniza e limpa os dados vindos da camada bronze."""
@@ -36,53 +29,43 @@ class JobSilverData:
     def process_data(self, source_name) -> DataFrame:
 
         input_path = self.payload[source_name]["path_bronze"]
-        print(input_path)
+        output_path = self.payload[source_name]["path_silver"]
 
         df = self.run.create_dataframe(
             path=input_path, options={"header": "true", "inferSchema": "true"}
         )
-        date_colum = self.payload[source_name]['partitions'][0]
-        df = self._clean_date_column(df, column=date_colum)
-        print(df.columns)
-        # df = self._clean_numeric_column(df,)
-        # df.show(5)
+        schema = SCHEMAS.get(source_name)
+        if schema is None:
+            raise ValueError(f"Schema not found for '{source_name}'.")
 
-        # self.run.write_parquet(
-        #     df=df,
-        #     output_path=self.payload[source_name] / "path_bronze",
-        #     partitions=source_name.get("partitions"),
-        # )
+        for column, dtype in schema.items():
+            if dtype == "double":
+                df = _clean_numeric_column(
+                    df,
+                    column,
+                )
+            elif dtype == "date":
+                df = _clean_date_column(
+                    df,
+                    column,
+                )
+            else:
+                df = df.withColumn(
+                    column,
+                    F.col(column).cast(dtype),
+                )
+        df = df.select(*schema.keys())
 
-        # logger.info(
-        #     "Silver dataset successfully created: %s",
-        #     source_name,
-        # )
-        # df.printSchema()
-        # print("*-" * 50)
+        self.run.write_parquet(
+            df=df,
+            output_path=output_path,
+            partitions=self.payload[source_name]["partitions"],
+        )
+
+        logger.info(
+            "Silver dataset successfully created: %s",
+            source_name,
+        )
+        df.printSchema()
+        print("*-" * 50)
         return df
-
-    def _clean_numeric_column(self, df: DataFrame, column: str) -> DataFrame:
-        """Converte coluna para numérica e trata valores inválidos."""
-        return (
-            df.withColumn(
-                column, F.regexp_replace(F.col(column).cast("string"), r"[^0-9,.-]", "")
-            )
-            .withColumn(column, F.regexp_replace(F.col(column), ",", "."))
-            .withColumn(
-                column,
-                F.when(F.col(column) == "", None).otherwise(
-                    F.col(column).cast("double")
-                ),
-            )
-        )
-
-    def _clean_date_column(
-        self, df: DataFrame, column: str, format_str: str = "dd/MM/yyyy"
-    ) -> DataFrame:
-        """Converte coluna para data e trata valores inválidos."""
-        return df.withColumn(
-            column,
-            F.when(
-                F.col(column).isNull() | (F.trim(F.col(column)) == ""), None
-            ).otherwise(F.to_date(F.col(column).cast("string"), format_str)),
-        )

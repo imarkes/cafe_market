@@ -966,3 +966,102 @@
 2026-07-07 23:30:41,243 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
 2026-07-07 23:30:45,524 | INFO | __main__ | Pipeline finished successfully.
 2026-07-07 23:30:45,525 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 20:51:23,627 | INFO | __main__ | Starting pipeline...
+2026-07-08 20:51:23,628 | INFO | spark_session | Creating Spark session
+2026-07-08 20:51:34,413 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 20:51:38,622 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 20:55:01,755 | INFO | __main__ | Starting pipeline...
+2026-07-08 20:55:01,755 | INFO | spark_session | Creating Spark session
+2026-07-08 20:55:10,960 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 20:55:14,619 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 20:56:59,270 | INFO | __main__ | Starting pipeline...
+2026-07-08 20:56:59,270 | INFO | spark_session | Creating Spark session
+2026-07-08 20:57:08,865 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 20:57:12,725 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:01:03,483 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:01:03,483 | INFO | spark_session | Creating Spark session
+2026-07-08 21:01:13,837 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 21:01:20,068 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 21:01:20,068 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:01:54,517 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:01:54,517 | INFO | spark_session | Creating Spark session
+2026-07-08 21:02:04,338 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:02:10,941 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:02:27,954 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:02:27,955 | INFO | spark_session | Creating Spark session
+2026-07-08 21:02:37,828 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:02:44,263 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:05:25,329 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:05:25,330 | INFO | spark_session | Creating Spark session
+2026-07-08 21:05:35,217 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:05:41,914 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:07:45,834 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:07:45,835 | INFO | spark_session | Creating Spark session
+2026-07-08 21:07:56,808 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:08:03,268 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 21:08:03,269 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:16:41,913 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:16:41,913 | INFO | spark_session | Creating Spark session
+2026-07-08 21:16:52,145 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:16:59,656 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 21:16:59,657 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:50:46,173 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:50:46,173 | INFO | spark_session | Creating Spark session
+2026-07-08 21:50:56,329 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:50:58,627 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:51:20,225 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:51:20,225 | INFO | spark_session | Creating Spark session
+2026-07-08 21:51:29,957 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:51:33,675 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 21:58:28,807 | INFO | __main__ | Starting pipeline...
+2026-07-08 21:58:28,808 | INFO | spark_session | Creating Spark session
+2026-07-08 21:58:38,849 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 21:58:41,091 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:00:50,064 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:00:50,064 | INFO | spark_session | Creating Spark session
+2026-07-08 22:01:01,407 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 22:01:10,141 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:06:16,732 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:06:16,732 | INFO | spark_session | Creating Spark session
+2026-07-08 22:06:27,651 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 22:06:34,948 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 22:06:34,948 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:07:38,012 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:07:38,012 | INFO | spark_session | Creating Spark session
+2026-07-08 22:07:48,206 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 22:07:54,167 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 22:07:54,168 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:09:35,857 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:09:35,858 | INFO | spark_session | Creating Spark session
+2026-07-08 22:09:46,734 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 22:09:53,326 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:12:45,467 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:12:45,467 | INFO | spark_session | Creating Spark session
+2026-07-08 22:12:55,646 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 22:12:59,946 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:14:45,474 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:14:45,475 | INFO | spark_session | Creating Spark session
+2026-07-08 22:14:55,281 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 22:15:01,632 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 22:15:01,632 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:17:24,337 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:17:24,338 | INFO | spark_session | Creating Spark session
+2026-07-08 22:17:34,236 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 22:17:40,955 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:24:53,306 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:24:53,307 | INFO | spark_session | Creating Spark session
+2026-07-08 22:25:04,204 | INFO | pipeline | Reading dataset: ../storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-08 22:25:10,927 | INFO | pipeline | Writing parquet dataset: ../storage/silver/cepea/robusta/robusta_cepea.parquet
+2026-07-08 22:25:46,489 | INFO | jobs.job_silver | Silver dataset successfully created: robusta
+2026-07-08 22:25:46,494 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 22:25:46,495 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-08 22:26:30,285 | INFO | __main__ | Starting pipeline...
+2026-07-08 22:26:30,286 | INFO | spark_session | Creating Spark session
+2026-07-08 22:26:40,349 | INFO | pipeline | Reading dataset: ../storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-08 22:26:48,543 | INFO | pipeline | Writing parquet dataset: ../storage/silver/inmet/franca/inmet_franca.parquet
+2026-07-08 22:27:02,854 | INFO | jobs.job_silver | Silver dataset successfully created: inmet_franca
+2026-07-08 22:27:02,861 | INFO | pipeline | Reading dataset: ../storage/bronze/bcb/selic/serie_11.parquet
+2026-07-08 22:27:03,503 | INFO | pipeline | Writing parquet dataset: ../storage/silver/bcb/selic/serie_11.parquet
+2026-07-08 22:27:09,707 | INFO | jobs.job_silver | Silver dataset successfully created: selic
+2026-07-08 22:27:09,709 | INFO | __main__ | Pipeline finished successfully.
+2026-07-08 22:27:09,710 | INFO | py4j.clientserver | Closing down clientserver connection

@@ -118,6 +118,7 @@ def main() -> None:
         run=pipeline,
     )
     silver.process_data("inmet_franca")
+    silver.process_data("selic")
     # silver.process_data("robusta")
 
     logger.info("Pipeline finished successfully.")

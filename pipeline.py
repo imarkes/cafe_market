@@ -5,9 +5,8 @@ from pathlib import Path
 
 from downloader import TaxDataDownloader
 from pyspark.sql import DataFrame, SparkSession
-from spark_session import create_spark_session
-
 from readers import DataReaderFactory
+from spark_session import create_spark_session
 
 logger = logging.getLogger(__name__)
 
@@ -128,38 +127,9 @@ class Pipeline:
             output_path,
         )
 
-        writer = (
-            df.write
-            .format("parquet")
-            .mode(mode)
-            .option("compression", "snappy")
-        )
+        writer = df.write.format("parquet").mode(mode).option("compression", "snappy")
 
         if partitions:
             writer = writer.partitionBy(*partitions)
 
         writer.save(output_path)
-
-    def read_parquet(
-        self,
-        path: str,
-        options: dict | None = None,
-    ) -> DataFrame:
-        """
-        Lê um dataset Parquet.
-
-        Returns
-        -------
-        DataFrame
-        """
-
-        logger.info(
-            "Reading parquet dataset: %s",
-            path,
-        )
-
-        return (
-            self.spark.read
-            .options(**(options or {}))
-            .parquet(path)
-        )

@@ -409,7 +409,7 @@ A API SGS limita consultas extensas por período. O downloader divide séries lo
 
 ```env
 PIPELINE_LAYER=all
-PIPELINE_SOURCE=
+PIPELINE_SOURCE=robusta
 DOWNLOAD_BCB=false
 BCB_SERIES=all
 LOG_LEVEL=INFO

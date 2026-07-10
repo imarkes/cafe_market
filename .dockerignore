@@ -26,14 +26,12 @@ logs/*
 *.log
 
 # Dados gerados pela pipeline
-storage/bronze/*
-storage/silver/*
-storage/gold/*
-storage/meta/*
+*.parquet
 
 # Banco analítico gerado
 *.duckdb
 *.duckdb.wal
+*.db
 
 # Sistema operacional
 .DS_Store

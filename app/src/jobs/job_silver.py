@@ -26,11 +26,11 @@ class JobSilverData:
         logger.info("Starting Silver Process...")
 
         for source_name in self.payload:
-            self.process_data(source_name)
+            self.process_source(source_name)
 
         logger.info("Silver Process finished.")
 
-    def process_data(self, source_name) -> DataFrame:
+    def process_source(self, source_name) -> DataFrame:
 
         input_path = self.payload[source_name]["path_bronze"]
         output_path = self.payload[source_name]["path_silver"]

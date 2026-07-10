@@ -1,4 +1,4 @@
-# Agro Data Pipeline
+# Cafe Data Pipeline
 
 Pipeline de dados para ingestão, padronização e análise integrada de informações públicas sobre **preços de café**, **indicadores econômicos** e **clima**.
 
@@ -8,22 +8,22 @@ Pipeline de dados para ingestão, padronização e análise integrada de informa
 
 ## Objetivo
 
-O projeto foi desenvolvido para simular uma arquitetura de dados aplicada ao agronegócio, consolidando fontes heterogêneas em uma camada analítica capaz de apoiar a investigação da seguinte pergunta:
+O projeto simula uma arquitetura de dados aplicada ao agronegócio, consolidando fontes heterogêneas para apoiar a investigação da seguinte pergunta:
 
 > Como os preços do café arábica e robusta se comportam em relação à SELIC, ao IPCA e às condições climáticas observadas em Patrocínio/MG e Franca/SP?
 
-O pipeline implementa as camadas:
+O pipeline implementa quatro etapas:
 
-- **Raw:** preparação dos arquivos recebidos.
-- **Bronze:** ingestão dos dados em formato Parquet.
-- **Silver:** limpeza, tipagem, padronização, deduplicação e aplicação de schema.
+- **Raw:** preparação dos arquivos recebidos e extração dos metadados do INMET.
+- **Bronze:** ingestão das fontes e persistência em Parquet.
+- **Silver:** limpeza, tipagem, tratamento de nulos, deduplicação e aplicação de schemas.
 - **Gold:** criação de dimensões, fatos e tabelas analíticas no DuckDB.
 
 ---
 
 ## Fontes de dados
 
-| Fonte | Conteúdo | Tipo | Formato |
+| Fonte | Conteúdo | Ingestão | Formato |
 |---|---|---|---|
 | CEPEA/ESALQ | Preços do café arábica e robusta | Arquivo | Excel |
 | Banco Central do Brasil — SGS | SELIC e IPCA | API REST | JSON |
@@ -31,8 +31,8 @@ O pipeline implementa as camadas:
 
 ### Séries econômicas
 
-- **SELIC:** código SGS `11`, com periodicidade diária.
-- **IPCA:** código SGS `433`, com periodicidade mensal.
+- **SELIC:** código SGS `11`, periodicidade diária.
+- **IPCA:** código SGS `433`, periodicidade mensal.
 
 ---
 
@@ -44,8 +44,7 @@ Fontes públicas
       v
 +-------------+
 |     Raw     |
-| CSV / XLS   |
-| JSON / API  |
+| CSV/XLS/API |
 +-------------+
       |
       v
@@ -58,7 +57,7 @@ Fontes públicas
 +-------------+
 |   Silver    |
 |   Parquet   |
-| schema/data |
+| Schema / DQ |
 +-------------+
       |
       v
@@ -94,7 +93,7 @@ A tabela diária é voltada à análise de eventos climáticos e movimentos de c
 
 ## Tecnologias e bibliotecas
 
-### Principais tecnologias
+### Tecnologias
 
 - Python
 - PySpark
@@ -106,17 +105,17 @@ A tabela diária é voltada à análise de eventos climáticos e movimentos de c
 - Docker Compose
 - uv
 
-### Principais bibliotecas Python
+### Bibliotecas principais
 
 - `pyspark`: leitura, transformação e escrita das camadas Bronze e Silver.
 - `duckdb`: modelagem relacional e consultas analíticas da camada Gold.
 - `requests`: consumo da API pública do Banco Central.
 - `spark-excel`: leitura das planilhas Excel do CEPEA.
-- `pathlib`: manipulação segura de caminhos.
-- `logging`: rastreabilidade da execução.
+- `pathlib`: resolução e manipulação de caminhos.
+- `logging`: logs e rastreabilidade da execução.
 - `contextlib`: gerenciamento da conexão com o DuckDB.
 
-As versões exatas devem ser consultadas no arquivo `pyproject.toml` e no `uv.lock`.
+As versões exatas estão registradas em `pyproject.toml` e `uv.lock`.
 
 ---
 
@@ -159,8 +158,6 @@ Culltivo/
 └── README.md
 ```
 
-A estrutura pode variar levemente conforme a organização adotada no repositório.
-
 ---
 
 ## Pré-requisitos
@@ -172,7 +169,7 @@ A estrutura pode variar levemente conforme a organização adotada no repositór
 - uv
 - Git
 
-### Execução com Docker
+### Execução em container
 
 - Docker
 - Docker Compose
@@ -196,7 +193,7 @@ Linux/macOS:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Confirme a instalação:
+Valide a instalação:
 
 ```bash
 uv --version
@@ -214,7 +211,7 @@ uv sync
 java -version
 ```
 
-A aplicação utiliza Java 17 para execução local do Spark.
+A aplicação utiliza Java 17 para executar o Spark localmente.
 
 ## 5. Preparar os arquivos de entrada
 
@@ -232,10 +229,10 @@ storage/raw/
 └── serie_433.json
 ```
 
-Verifique também:
+Confira também:
 
-- o nome da aba do Excel;
-- a posição inicial da tabela, por exemplo: `'Plan 1'!A4`;
+- o nome da aba de cada arquivo Excel;
+- a posição inicial da tabela, por exemplo `'Plan 1'!A4`;
 - os caminhos `path_raw`, `path_raw_cleaned`, `path_bronze`, `path_silver` e `path_gold`.
 
 ## 6. Executar a aplicação
@@ -246,108 +243,201 @@ Pela raiz do projeto:
 uv run python main.py
 ```
 
-Ou, caso o módulo principal seja `app.src.run`:
+Também é possível executar o módulo diretamente:
 
 ```bash
 uv run python -m app.src.run
 ```
 
----
+Sem argumentos, o valor padrão é:
 
-# Execução por camada
-
-## Raw
-
-Responsável por:
-
-- extrair metadados dos arquivos INMET;
-- localizar o cabeçalho tabular;
-- padronizar os nomes das colunas;
-- criar o arquivo `path_raw_cleaned`;
-- salvar os metadados em JSON.
-
-Exemplo:
-
-```python
-job_raw.run_all()
+```text
+PIPELINE_LAYER=all
 ```
 
-## Bronze
+O fluxo completo segue esta ordem:
 
-Responsável por:
-
-- ler CSV, Excel e JSON;
-- adicionar metadados de ingestão;
-- persistir os dados em Parquet.
-
-Exemplo:
-
-```python
-job_bronze.run_jobs()
-```
-
-## Silver
-
-Responsável por:
-
-- aplicar os schemas;
-- converter datas;
-- converter valores numéricos;
-- tratar valores nulos;
-- remover duplicidades;
-- selecionar apenas as colunas previstas no contrato.
-
-Exemplo:
-
-```python
-job_silver.run_all()
-```
-
-## Gold
-
-Responsável por:
-
-- ler os Parquets da Silver;
-- criar tabelas dimensão e fato;
-- gerar tabelas analíticas no DuckDB.
-
-Exemplo:
-
-```python
-job_gold.process_analytics()
+```text
+Download BCB opcional
+        ↓
+Raw
+        ↓
+Bronze
+        ↓
+Silver
+        ↓
+Gold
 ```
 
 ---
 
-# Download das séries do Banco Central
+# Controle de execução
 
-Para baixar apenas a SELIC:
+A aplicação aceita argumentos de linha de comando e variáveis de ambiente. Argumentos informados no terminal têm precedência sobre as variáveis de ambiente.
 
-```python
-manager.download_tax_series(
-    payload=payload,
-    tax_name="selic",
-)
+## Camadas disponíveis
+
+| Camada | Função |
+|---|---|
+| `all` | Executa Raw, Bronze, Silver e Gold; o download do BCB é opcional |
+| `download` | Baixa SELIC, IPCA ou ambas |
+| `raw` | Prepara os CSVs do INMET |
+| `bronze` | Ingere as fontes e grava Parquet |
+| `silver` | Limpa, tipa, deduplica e aplica os schemas |
+| `gold` | Cria o Data Warehouse analítico no DuckDB |
+
+## Executar o pipeline completo
+
+```bash
+uv run python main.py --layer all
 ```
 
-Para baixar apenas o IPCA:
+## Executar o pipeline completo baixando SELIC e IPCA
 
-```python
-manager.download_tax_series(
-    payload=payload,
-    tax_name="ipca",
-)
+```bash
+uv run python main.py \
+  --layer all \
+  --download-bcb \
+  --bcb-series all
 ```
 
-Para baixar todas as séries configuradas:
+## Executar somente Raw
 
-```python
-manager.download_tax_series(
-    payload=payload,
-)
+Todas as fontes INMET:
+
+```bash
+uv run python main.py --layer raw
 ```
 
-A API SGS possui limitação de período por requisição. Para séries longas, o downloader deve dividir o intervalo em janelas de até dez anos e concatenar os resultados.
+Uma fonte específica:
+
+```bash
+uv run python main.py \
+  --layer raw \
+  --source inmet_franca
+```
+
+A camada Raw atual aceita apenas fontes cujo nome começa com `inmet_`.
+
+## Executar somente Bronze
+
+Todas as fontes:
+
+```bash
+uv run python main.py --layer bronze
+```
+
+Uma fonte específica:
+
+```bash
+uv run python main.py \
+  --layer bronze \
+  --source robusta
+```
+
+Outros exemplos:
+
+```bash
+uv run python main.py --layer bronze --source arabica
+uv run python main.py --layer bronze --source selic
+uv run python main.py --layer bronze --source inmet_patrocinio
+```
+
+## Executar somente Silver
+
+Todas as fontes:
+
+```bash
+uv run python main.py --layer silver
+```
+
+Uma fonte específica:
+
+```bash
+uv run python main.py \
+  --layer silver \
+  --source inmet_patrocinio
+```
+
+Outros exemplos:
+
+```bash
+uv run python main.py --layer silver --source ipca
+uv run python main.py --layer silver --source robusta
+uv run python main.py --layer silver --source inmet_franca
+```
+
+## Executar somente Gold
+
+```bash
+uv run python main.py --layer gold
+```
+
+A Gold depende do conjunto das fontes Silver e não aceita `--source`.
+
+## Executar somente o download do Banco Central
+
+Apenas SELIC:
+
+```bash
+uv run python main.py \
+  --layer download \
+  --source selic
+```
+
+Apenas IPCA:
+
+```bash
+uv run python main.py \
+  --layer download \
+  --source ipca
+```
+
+Todas as séries configuradas:
+
+```bash
+uv run python main.py \
+  --layer download \
+  --bcb-series all
+```
+
+A API SGS limita consultas extensas por período. O downloader divide séries longas em janelas de até dez anos e consolida os resultados.
+
+---
+
+## Variáveis de ambiente
+
+```env
+PIPELINE_LAYER=all
+PIPELINE_SOURCE=
+DOWNLOAD_BCB=false
+BCB_SERIES=all
+LOG_LEVEL=INFO
+```
+
+| Variável | Valores | Padrão |
+|---|---|---|
+| `PIPELINE_LAYER` | `all`, `download`, `raw`, `bronze`, `silver`, `gold` | `all` |
+| `PIPELINE_SOURCE` | Nome de uma fonte existente no payload | vazio |
+| `DOWNLOAD_BCB` | `true` ou `false` | `false` |
+| `BCB_SERIES` | `all`, `selic`, `ipca` | `all` |
+| `LOG_LEVEL` | `DEBUG`, `INFO`, `WARNING`, `ERROR` | `INFO` |
+
+Exemplo:
+
+```bash
+PIPELINE_LAYER=silver \
+PIPELINE_SOURCE=inmet_franca \
+uv run python main.py
+```
+
+### Regras de validação
+
+- `PIPELINE_SOURCE` não pode ser usado com `PIPELINE_LAYER=all`.
+- A camada `gold` não aceita uma fonte isolada.
+- A camada `download` aceita somente `selic` ou `ipca` como fonte.
+- A camada `raw` atual aceita somente fontes INMET.
+- Sem uma fonte específica, a camada selecionada processa todas as fontes aplicáveis.
 
 ---
 
@@ -365,62 +455,143 @@ Ou:
 docker build -t culttivo-pipeline:latest .
 ```
 
-## 2. Executar a pipeline
+## 2. Executar o pipeline completo
 
 ```bash
 docker compose run --rm culttivo-pipeline
 ```
 
-Ou:
+Também é possível utilizar:
 
 ```bash
 docker compose up --build
 ```
 
-## 3. Acompanhar os logs
+A aplicação executa jobs batch. O container encerra após a conclusão do fluxo.
+
+## 3. Executar o fluxo completo baixando SELIC e IPCA
+
+```bash
+DOWNLOAD_BCB=true \
+BCB_SERIES=all \
+docker compose run --rm culttivo-pipeline
+```
+
+## 4. Executar uma camada específica
+
+Raw:
+
+```bash
+PIPELINE_LAYER=raw \
+docker compose run --rm culttivo-pipeline
+```
+
+Bronze:
+
+```bash
+PIPELINE_LAYER=bronze \
+docker compose run --rm culttivo-pipeline
+```
+
+Silver:
+
+```bash
+PIPELINE_LAYER=silver \
+docker compose run --rm culttivo-pipeline
+```
+
+Gold:
+
+```bash
+PIPELINE_LAYER=gold \
+docker compose run --rm culttivo-pipeline
+```
+
+## 5. Executar uma única fonte
+
+Bronze do café robusta:
+
+```bash
+PIPELINE_LAYER=bronze \
+PIPELINE_SOURCE=robusta \
+docker compose run --rm culttivo-pipeline
+```
+
+Silver do INMET Franca:
+
+```bash
+PIPELINE_LAYER=silver \
+PIPELINE_SOURCE=inmet_franca \
+docker compose run --rm culttivo-pipeline
+```
+
+Raw do INMET Patrocínio:
+
+```bash
+PIPELINE_LAYER=raw \
+PIPELINE_SOURCE=inmet_patrocinio \
+docker compose run --rm culttivo-pipeline
+```
+
+## 6. Executar somente o download do BCB
+
+SELIC:
+
+```bash
+PIPELINE_LAYER=download \
+PIPELINE_SOURCE=selic \
+docker compose run --rm culttivo-pipeline
+```
+
+IPCA:
+
+```bash
+PIPELINE_LAYER=download \
+PIPELINE_SOURCE=ipca \
+docker compose run --rm culttivo-pipeline
+```
+
+Todas as séries:
+
+```bash
+PIPELINE_LAYER=download \
+BCB_SERIES=all \
+docker compose run --rm culttivo-pipeline
+```
+
+## 7. Acompanhar os logs
+
+Quando iniciado com `docker compose up`:
 
 ```bash
 docker compose logs -f culttivo-pipeline
 ```
 
-## 4. Executar uma camada específica
+## 8. Variáveis no `compose.yaml`
 
-Caso o projeto utilize a variável `PIPELINE_LAYER`:
+O Compose deve repassar as opções de execução:
 
-```bash
-PIPELINE_LAYER=bronze docker compose run --rm culttivo-pipeline
+```yaml
+services:
+  culttivo-pipeline:
+    environment:
+      PIPELINE_LAYER: ${PIPELINE_LAYER:-all}
+      PIPELINE_SOURCE: ${PIPELINE_SOURCE:-}
+      DOWNLOAD_BCB: ${DOWNLOAD_BCB:-false}
+      BCB_SERIES: ${BCB_SERIES:-all}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
 ```
 
-```bash
-PIPELINE_LAYER=silver docker compose run --rm culttivo-pipeline
-```
+## Persistência dos dados
 
-```bash
-PIPELINE_LAYER=gold docker compose run --rm culttivo-pipeline
-```
-
-Valores permitidos:
-
-```text
-raw
-bronze
-silver
-gold
-all
-```
-
----
-
-## Persistência dos dados no Docker
-
-O diretório local deve ser montado no container:
+Monte o diretório local no container:
 
 ```yaml
 volumes:
   - ./storage:/app/storage
 ```
 
-Assim, os arquivos gerados permanecem disponíveis no host após o encerramento do container.
+Assim, arquivos Raw, Bronze, Silver, Gold e o banco DuckDB permanecem disponíveis no host após o encerramento do container.
 
 ---
 
@@ -453,7 +624,6 @@ result = connection.sql(
 ).df()
 
 print(result)
-
 connection.close()
 ```
 
@@ -463,7 +633,7 @@ Também é possível utilizar a CLI do DuckDB:
 duckdb storage/gold/culttivo.duckdb
 ```
 
-Dentro da CLI:
+Consultas iniciais:
 
 ```sql
 SHOW TABLES;
@@ -490,7 +660,7 @@ O projeto considera:
 - separação entre dados brutos, padronizados e analíticos;
 - indicadores de qualidade nas tabelas Gold.
 
-Valores climáticos ausentes não devem ser convertidos automaticamente para zero:
+Valores climáticos ausentes não são convertidos automaticamente para zero:
 
 - `NULL`: medição ausente ou inválida;
 - `0`: medição realizada, sem ocorrência do fenômeno.
@@ -511,7 +681,7 @@ PySpark foi utilizado para demonstrar:
 
 ## DuckDB na camada Gold
 
-DuckDB foi utilizado por ser:
+DuckDB foi escolhido por ser:
 
 - local;
 - gratuito;
@@ -539,7 +709,7 @@ Parquet oferece:
 - Relações observadas entre clima, SELIC, IPCA e preços não representam causalidade.
 - O IPCA possui granularidade mensal e deve ser analisado preferencialmente na tabela mensal.
 - Anomalias climáticas calculadas com uma série curta representam anomalias móveis, não uma normal climatológica histórica.
-- A ingestão dos arquivos CEPEA depende da estrutura da planilha fornecida.
+- A ingestão do CEPEA depende da estrutura das planilhas fornecidas.
 
 ---
 
@@ -548,7 +718,7 @@ Parquet oferece:
 - Testes unitários e de integração.
 - Validação de qualidade com Great Expectations ou Soda.
 - Orquestração com Apache Airflow.
-- Catálogo e lineage.
+- Catálogo, auditoria e lineage.
 - Escrita em Delta Lake ou Apache Iceberg.
 - Dashboard em Power BI, Metabase ou Streamlit.
 - Análise de correlação com defasagens temporais.

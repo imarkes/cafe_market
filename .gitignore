@@ -8,10 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
-storage/bronze/*
-storage/silver/*
-storage/gold/*
-storage/meta/*
+storage/bronze/*/.parquet
+storage/silver/*/*.parquet
+storage/gold/*/*.parquet
+storage/meta/*.json
 logs/*
 # Banco analítico gerado
 *.db

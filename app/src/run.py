@@ -304,7 +304,7 @@ class PipelineRunner:
         )
 
         if self.config.source:
-            job.process_data(self.config.source)
+            job.process_source(self.config.source)
             return
 
         job.run_all()

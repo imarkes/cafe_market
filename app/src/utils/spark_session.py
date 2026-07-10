@@ -10,7 +10,6 @@ def create_spark_session(app_name: str = "Culltivo Pipeline") -> SparkSession:
     """Create and return a reusable Spark session for the pipeline."""
     os.environ.setdefault("SPARK_LOCAL_IP", "127.0.0.1")
     os.environ.setdefault("SPARK_LOG_LEVEL", "ERROR")
-
     builder = (
         SparkSession.builder.appName(app_name)
         .master("local[*]")
@@ -27,3 +26,15 @@ def create_spark_session(app_name: str = "Culltivo Pipeline") -> SparkSession:
 
     logger.info("Creating Spark session")
     return builder.getOrCreate()
+
+    # def _stop_spark(self) -> None:
+    #     """Encerra a sessão Spark caso ela tenha sido inicializada."""
+
+    #     if self._manager is None:
+    #         return
+
+    #     spark = getattr(self._manager, "spark", None)
+
+    #     if spark is not None:
+    #         logger.info("Stopping Spark session...")
+    #         spark.stop()

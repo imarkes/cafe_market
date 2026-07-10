@@ -1,0 +1,18 @@
+{
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.parquet": "duckdb.dataFileViewer",
+        "*.csv": "duckdb.dataFileViewer",
+        "*.tsv": "duckdb.dataFileViewer",
+        "*.xlsx": "duckdb.dataFileViewer"
+    },
+    "duckdb.databases": [
+        {
+            "alias": "culttivo",
+            "type": "file",
+            "path": "/home/ivan/Documentos/Labs/Culltivo/storage/gold/culttivo.duckdb",
+            "attached": true
+        }
+    ],
+    "duckdb.defaultDatabase": "culttivo"
+}

@@ -1,8 +1,8 @@
 
 
 
-from app.src.run import Pipeline
-
+from app.src.run import main
+# 
 
 if __name__ == '__main__':
-    Pipeline()
+    main()

@@ -6,7 +6,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from pipeline.manager import DataManager
+from ..pipeline.manager import DataManager
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import lit,col, to_date, trim, when
 
@@ -97,7 +97,6 @@ class JobBronzeData:
         self.run.write_parquet(
             df=df,
             output_path=source["path_bronze"],
-            # partitions=source.get("partitions"),
         )
 
         logger.info(

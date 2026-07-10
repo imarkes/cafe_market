@@ -20,6 +20,9 @@ def create_spark_session(app_name: str = "Culltivo Pipeline") -> SparkSession:
         .config("spark.default.parallelism", "4")
         .config("spark.jars.packages", "com.crealytics:spark-excel_2.13:3.5.1_0.20.4")
         .config("spark.sql.execution.arrow.pyspark.enabled", "true")
+        .config("spark.sql.ansi.enabled", "true")
+        .config("spark.sql.parquet.compression.codec", "snappy")
+        .config("spark.sql.shuffle.partitions", "8")
     )
 
     logger.info("Creating Spark session")

@@ -3,10 +3,11 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from pipeline.downloader import TaxDataDownloader
 from pyspark.sql import DataFrame, SparkSession
-from utils.readers import DataReaderFactory
-from utils.spark_session import create_spark_session
+
+from ..pipeline.downloader import TaxDataDownloader
+from ..utils.readers import DataReaderFactory
+from ..utils.spark_session import create_spark_session
 
 logger = logging.getLogger(__name__)
 

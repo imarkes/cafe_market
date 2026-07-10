@@ -12,7 +12,11 @@ SCHEMAS = {
       "longitude": "double",
       "altitude": "double",
       "data_inicial": "date",
-      "data_final": "date"
+      "data_final": "date",
+      "nome":"string",
+      "codigo_estacao":"string",
+      "situacao":"string",
+      "periodicidade_da_medicao":"string"
     },
     "inmet_patrocinio": {
       "data_medicao": "date",
@@ -26,7 +30,11 @@ SCHEMAS = {
       "longitude": "double",
       "altitude": "double",
       "data_inicial": "date",
-      "data_final": "date"
+      "data_final": "date",
+      "nome":"string",
+      "codigo_estacao":"string",
+      "situacao":"string",
+      "periodicidade_da_medicao":"string"
     },
     "robusta": {
       "data":"date",

@@ -1,0 +1,232 @@
+2026-07-09 21:59:31,337 | INFO | app.src.run | Starting pipeline...
+2026-07-09 21:59:31,337 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 21:59:39,243 | INFO | app.src.jobs.job_bronze | Starting Bronze ingestion...
+2026-07-09 21:59:39,244 | INFO | app.src.jobs.job_bronze | Reading source 'ipca' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 21:59:39,244 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 21:59:40,902 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-09 21:59:42,759 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: ipca
+2026-07-09 21:59:42,762 | INFO | app.src.jobs.job_bronze | Reading source 'selic' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_11.json
+2026-07-09 21:59:42,762 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_11.json
+2026-07-09 21:59:42,867 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/selic/serie_11.parquet
+2026-07-09 21:59:43,066 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: selic
+2026-07-09 21:59:43,067 | INFO | app.src.jobs.job_bronze | Reading source 'robusta' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-09 21:59:43,068 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-09 21:59:43,567 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-09 21:59:44,587 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: robusta
+2026-07-09 21:59:44,588 | INFO | app.src.jobs.job_bronze | Reading source 'arabica' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-09 21:59:44,588 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-09 21:59:44,736 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-09 21:59:45,348 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: arabica
+2026-07-09 21:59:45,348 | INFO | app.src.jobs.job_bronze | Reading source 'inmet_patrocinio' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-09 21:59:45,349 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-09 21:59:45,756 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 21:59:46,061 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: inmet_patrocinio
+2026-07-09 21:59:46,062 | INFO | app.src.jobs.job_bronze | Reading source 'inmet_franca' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 21:59:46,062 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 21:59:46,254 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-09 21:59:46,466 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: inmet_franca
+2026-07-09 21:59:46,467 | INFO | app.src.jobs.job_bronze | Bronze ingestion finished.
+2026-07-09 21:59:46,467 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:01:01,405 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:01:01,405 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:01:09,080 | INFO | app.src.jobs.job_silver | Starting Silver Process...
+2026-07-09 22:01:09,080 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-09 22:01:12,017 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/bcb/ipca/serie_433.parquet
+2026-07-09 22:01:16,472 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: ipca
+2026-07-09 22:01:16,475 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/selic/serie_11.parquet
+2026-07-09 22:01:16,781 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/bcb/selic/serie_11.parquet
+2026-07-09 22:01:20,711 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: selic
+2026-07-09 22:01:20,712 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-09 22:01:21,105 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/cepea/robusta/robusta_cepea.parquet
+2026-07-09 22:01:57,680 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: robusta
+2026-07-09 22:01:57,681 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-09 22:01:58,021 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/cepea/arabica/arabica_cepa.parquet
+2026-07-09 22:02:42,977 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: arabica
+2026-07-09 22:02:42,978 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 22:02:43,720 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:12:44,795 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:12:44,795 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:12:53,644 | INFO | app.src.jobs.job_silver | Starting Silver Process...
+2026-07-09 22:12:53,644 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-09 22:12:57,312 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/bcb/ipca/serie_433.parquet
+2026-07-09 22:13:01,290 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: ipca
+2026-07-09 22:13:01,294 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/selic/serie_11.parquet
+2026-07-09 22:13:01,563 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/bcb/selic/serie_11.parquet
+2026-07-09 22:13:05,133 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: selic
+2026-07-09 22:13:05,134 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-09 22:13:05,529 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/cepea/robusta/robusta_cepea.parquet
+2026-07-09 22:13:32,530 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: robusta
+2026-07-09 22:13:32,531 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-09 22:13:32,915 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/cepea/arabica/arabica_cepa.parquet
+2026-07-09 22:14:04,781 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: arabica
+2026-07-09 22:14:04,783 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 22:14:05,437 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:14:15,598 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:14:15,598 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:14:24,511 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:20:32,058 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:20:32,058 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:20:39,736 | INFO | app.src.jobs.job_raw | Preparando os dados: inmet_patrocinio
+2026-07-09 22:20:39,736 | INFO | app.src.jobs.job_raw | Preparando os dados: inmet_franca
+2026-07-09 22:20:39,737 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:22:34,185 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:22:34,185 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:22:42,315 | INFO | app.src.jobs.job_raw | Preparando os dados: inmet_patrocinio
+2026-07-09 22:22:42,316 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:45:24,737 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:45:24,737 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:45:32,650 | INFO | app.src.jobs.job_raw | Starting raw preparation for source: inmet_patrocinio
+2026-07-09 22:45:32,651 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:47:46,421 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:47:46,421 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:47:53,579 | INFO | app.src.jobs.job_raw | Starting raw preparation for source: inmet_patrocinio
+2026-07-09 22:47:53,580 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:48:56,544 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:48:56,544 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:49:04,166 | INFO | app.src.jobs.job_raw | Starting raw preparation for source: inmet_patrocinio
+2026-07-09 22:49:04,167 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:50:43,126 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:50:43,126 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:50:50,489 | INFO | app.src.jobs.job_raw | Starting raw preparation for source: inmet_patrocinio
+2026-07-09 22:50:50,494 | INFO | app.src.jobs.job_raw | Metadata file written with 9 fields: /home/ivan/Documentos/Labs/Culltivo/storage/meta/inmet_patrocinio/metadata.json
+2026-07-09 22:50:50,495 | INFO | app.src.jobs.job_raw | Cleaned INMET file written to: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-09 22:50:50,495 | INFO | app.src.jobs.job_raw | Raw preparation completed for 'inmet_patrocinio'. Cleaned file: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-09 22:50:50,495 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:53:44,269 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:53:44,270 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:53:51,949 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:54:22,688 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:54:22,689 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:54:30,271 | INFO | app.src.jobs.job_raw | Starting raw preparation for source: inmet_franca
+2026-07-09 22:54:30,272 | INFO | app.src.jobs.job_raw | Metadata file written with 9 fields: /home/ivan/Documentos/Labs/Culltivo/storage/meta/inmet_franca/metadata.json
+2026-07-09 22:54:30,273 | INFO | app.src.jobs.job_raw | Cleaned INMET file written to: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 22:54:30,273 | INFO | app.src.jobs.job_raw | Raw preparation completed for 'inmet_franca'. Cleaned file: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 22:54:30,273 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:55:33,836 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:55:33,836 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:55:41,144 | INFO | app.src.jobs.job_raw | Starting raw preparation for source: inmet_franca
+2026-07-09 22:55:41,146 | INFO | app.src.jobs.job_raw | Metadata file written with 9 fields: /home/ivan/Documentos/Labs/Culltivo/storage/meta/inmet_franca/metadata.json
+2026-07-09 22:55:41,147 | INFO | app.src.jobs.job_raw | Cleaned INMET file written to: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 22:55:41,147 | INFO | app.src.jobs.job_raw | Raw preparation completed for 'inmet_franca'. Cleaned file: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 22:55:41,147 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:58:30,587 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:58:30,587 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:58:37,816 | INFO | app.src.jobs.job_bronze | Starting Bronze ingestion...
+2026-07-09 22:58:37,816 | INFO | app.src.jobs.job_bronze | Reading source 'ipca' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 22:58:37,816 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 22:58:40,391 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 22:59:44,543 | INFO | app.src.run | Starting pipeline...
+2026-07-09 22:59:44,543 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 22:59:52,038 | INFO | app.src.jobs.job_bronze | Starting Bronze ingestion...
+2026-07-09 22:59:52,038 | INFO | app.src.jobs.job_bronze | Reading source 'ipca' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 22:59:52,038 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 22:59:54,834 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:00:40,135 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:00:40,135 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:00:47,686 | INFO | app.src.jobs.job_bronze | Starting Bronze ingestion...
+2026-07-09 23:00:47,686 | INFO | app.src.jobs.job_bronze | Reading source 'ipca' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 23:00:47,686 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-09 23:00:49,153 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-09 23:00:50,764 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: ipca
+2026-07-09 23:00:50,767 | INFO | app.src.jobs.job_bronze | Reading source 'selic' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_11.json
+2026-07-09 23:00:50,767 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_11.json
+2026-07-09 23:00:50,902 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/selic/serie_11.parquet
+2026-07-09 23:00:51,097 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: selic
+2026-07-09 23:00:51,098 | INFO | app.src.jobs.job_bronze | Reading source 'robusta' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-09 23:00:51,098 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/ROBUSTA_CEPEA_20260706165657.xls
+2026-07-09 23:00:51,555 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-09 23:00:52,555 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: robusta
+2026-07-09 23:00:52,557 | INFO | app.src.jobs.job_bronze | Reading source 'arabica' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-09 23:00:52,557 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/ARABICA_CEPEA_20260706165648.xls
+2026-07-09 23:00:52,735 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-09 23:00:53,353 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: arabica
+2026-07-09 23:00:53,354 | INFO | app.src.jobs.job_bronze | Reading source 'inmet_patrocinio' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-09 23:00:53,354 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A523_D_2025-01-01_2026-07-06_inmet_patrocinio_cleaned.csv
+2026-07-09 23:00:53,927 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 23:00:54,452 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: inmet_patrocinio
+2026-07-09 23:00:54,453 | INFO | app.src.jobs.job_bronze | Reading source 'inmet_franca' from /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 23:00:54,453 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/raw/dados_A708_D_2025-01-01_2026-07-06_inmet_franca_cleaned.csv
+2026-07-09 23:00:54,711 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-09 23:00:54,902 | INFO | app.src.jobs.job_bronze | Bronze dataset successfully created: inmet_franca
+2026-07-09 23:00:54,903 | INFO | app.src.jobs.job_bronze | Bronze ingestion finished.
+2026-07-09 23:00:54,904 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:02:30,344 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:02:30,344 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:02:38,238 | INFO | app.src.jobs.job_silver | Starting Silver Process...
+2026-07-09 23:02:38,238 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/ipca/serie_433.parquet
+2026-07-09 23:02:41,064 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/bcb/ipca/serie_433.parquet
+2026-07-09 23:02:45,036 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: ipca
+2026-07-09 23:02:45,039 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/bcb/selic/serie_11.parquet
+2026-07-09 23:02:45,284 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/bcb/selic/serie_11.parquet
+2026-07-09 23:02:48,783 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: selic
+2026-07-09 23:02:48,788 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/robusta/robusta_cepea.parquet
+2026-07-09 23:02:49,195 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/cepea/robusta/robusta_cepea.parquet
+2026-07-09 23:03:18,296 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: robusta
+2026-07-09 23:03:18,296 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/cepea/arabica/arabica_cepa.parquet
+2026-07-09 23:03:18,678 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/cepea/arabica/arabica_cepa.parquet
+2026-07-09 23:03:54,201 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: arabica
+2026-07-09 23:03:54,202 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 23:03:55,083 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:05:01,013 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:05:01,013 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:05:08,544 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/franca/inmet_franca.parquet
+2026-07-09 23:05:12,945 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/inmet/franca/inmet_franca.parquet
+2026-07-09 23:05:25,089 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: inmet_franca
+2026-07-09 23:05:25,092 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:05:57,791 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:05:57,792 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:06:05,373 | INFO | app.src.pipeline.manager | Reading dataset: /home/ivan/Documentos/Labs/Culltivo/storage/bronze/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 23:06:09,418 | INFO | app.src.pipeline.manager | Writing parquet dataset: /home/ivan/Documentos/Labs/Culltivo/storage/silver/inmet/patrocinio/inmet_patrocinio.parquet
+2026-07-09 23:06:20,910 | INFO | app.src.jobs.job_silver | Silver dataset successfully created: inmet_patrocinio
+2026-07-09 23:06:20,913 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:06:57,398 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:06:57,398 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:07:05,347 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:07:05,348 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:08:45,985 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:08:45,985 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:08:53,407 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:08:53,408 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:09:18,067 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:09:18,067 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:09:25,295 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:09:25,295 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:10:27,805 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:10:27,805 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:10:35,001 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:10:35,002 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:12:29,379 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:12:29,379 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:12:36,543 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:12:36,544 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:15:18,890 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:15:18,890 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:15:26,600 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:15:26,605 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:19:07,317 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:19:07,317 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:19:14,421 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:19:18,217 | INFO | app.src.jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 23:19:18,303 | INFO | app.src.jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 23:19:18,819 | INFO | app.src.jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-09 23:19:18,857 | INFO | app.src.jobs.job_gold | Creating table: market_analysis.sql
+2026-07-09 23:19:18,942 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-09 23:19:18,942 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:23:40,953 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:23:40,953 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:23:48,888 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:23:52,692 | INFO | app.src.jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 23:23:52,753 | INFO | app.src.jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 23:23:53,236 | INFO | app.src.jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-09 23:23:53,275 | INFO | app.src.jobs.job_gold | Creating table: market_analysis.sql
+2026-07-09 23:23:53,349 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-09 23:23:53,349 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-09 23:24:43,913 | INFO | app.src.run | Starting pipeline...
+2026-07-09 23:24:43,913 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-09 23:24:51,229 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-09 23:24:55,303 | INFO | app.src.jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-09 23:24:55,360 | INFO | app.src.jobs.job_gold | Creating table: fact_clima.sql
+2026-07-09 23:24:55,821 | INFO | app.src.jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-09 23:24:55,857 | INFO | app.src.jobs.job_gold | Creating table: market_analysis.sql
+2026-07-09 23:24:55,936 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-09 23:24:55,937 | INFO | py4j.clientserver | Closing down clientserver connection

@@ -1,0 +1,30 @@
+services:
+  culttivo-pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: culttivo-pipeline:latest
+    container_name: culttivo-pipeline
+
+    environment:
+      APP_ENV: production
+      LOG_LEVEL: INFO
+      SPARK_MASTER: local[*]
+      SPARK_DRIVER_MEMORY: 2g
+      SPARK_LOCAL_IP: 127.0.0.1
+
+    volumes:
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+      - spark-ivy-cache:/home/appuser/.ivy2
+
+    command:
+      - python
+      - -m
+      - app.src.run
+
+    restart: "no"
+
+volumes:
+  spark-ivy-cache:

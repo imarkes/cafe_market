@@ -8,4 +8,16 @@ wheels/
 
 # Virtual environments
 .venv
-storage/*
+storage/bronze/*
+storage/silver/*
+storage/gold/*
+storage/meta/*
+
+
+# Banco analítico gerado
+*.duckdb
+*.duckdb.wal
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

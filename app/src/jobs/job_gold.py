@@ -1,6 +1,6 @@
 import logging
 
-from database.sql_executor import execute_sql_file
+from ..database.sql_executor import execute_sql_file
 
 logger = logging.getLogger(__name__)
 class JobGoldData:

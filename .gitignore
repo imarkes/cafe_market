@@ -12,8 +12,7 @@ storage/bronze/*
 storage/silver/*
 storage/gold/*
 storage/meta/*
-
-
+logs/*
 # Banco analítico gerado
 *.db
 *.duckdb

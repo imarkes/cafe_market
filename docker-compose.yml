@@ -13,6 +13,10 @@ services:
       SPARK_MASTER: local[*]
       SPARK_DRIVER_MEMORY: 2g
       SPARK_LOCAL_IP: 127.0.0.1
+      PIPELINE_LAYER: ${PIPELINE_LAYER:-all}
+      PIPELINE_SOURCE: ${PIPELINE_SOURCE:-}
+      DOWNLOAD_BCB: ${DOWNLOAD_BCB:-false}
+      BCB_SERIES: ${BCB_SERIES:-all}
 
     volumes:
       - ./storage:/app/storage

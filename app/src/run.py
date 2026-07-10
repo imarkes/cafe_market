@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 
 from app.src.jobs.job_raw import JobRawData
@@ -89,7 +90,7 @@ def main() -> None:
     """
 
     logger.info("Starting pipeline...")
-    # layer = os.getenv("PIPELINE_LAYER", "all").lower()
+    layer = os.getenv("PIPELINE_LAYER", "all").lower()
 
     manager = DataManager()
 
@@ -99,10 +100,10 @@ def main() -> None:
         "silver": JobSilverData(payload=payload, run=manager),
         "gold": JobGoldData(payload=payload),
     }
-    # if layer == "all":
-    #     jobs["bronze"].run_all()
-    #     jobs["silver"].run_all()
-    #     jobs["gold"].create_datawarehouse()
+    if layer == "all":
+        jobs["bronze"].run_all()
+        jobs["silver"].run_all()
+        jobs["gold"].create_datawarehouse()
 
     ##------[Ingestion]-----
     manager.download_tax_series(

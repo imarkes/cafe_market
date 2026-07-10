@@ -5,13 +5,14 @@
     "*.csv": "duckdb.dataFileViewer",
     "*.tsv": "duckdb.dataFileViewer",
     "*.xlsx": "duckdb.dataFileViewer",
-    "*.db": "sqlite-viewer.view"
+    "*.db": "sqlite-viewer.view",
+    "*.duckdb": "sqlite-viewer.readonly"
   },
   "duckdb.databases": [
     {
       "alias": "culttivo",
       "type": "file",
-      "path": "/home/ivan/Documentos/Labs/Culltivo/storage/gold/culttivo.duckdb",
+      "path": "/home/ivan/Documentos/Labs/Culltivo/culttivo.duckdb",
       "attached": true
     }
   ],

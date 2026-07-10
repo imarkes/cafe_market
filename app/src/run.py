@@ -1,16 +1,15 @@
 from __future__ import annotations
+
 import logging
-import os
 from pathlib import Path
 
 from app.src.jobs.job_raw import JobRawData
-from .utils.logging_config import configure_logging
 
 from .jobs.job_bronze import JobBronzeData
-from .pipeline.manager import DataManager
-from .jobs.job_silver import JobSilverData
 from .jobs.job_gold import JobGoldData
-
+from .jobs.job_silver import JobSilverData
+from .pipeline.manager import DataManager
+from .utils.logging_config import configure_logging
 
 configure_logging("INFO")
 logger = logging.getLogger(__name__)
@@ -22,8 +21,8 @@ STORAGE_PATH = PROJECT_ROOT / "storage"
 payload = {
     "ipca": {
         "COD_IPCA": 433,
-        "start_date": "01/01/2020",
-        "end_date": "31/12/2020",
+        "start_date": "01/01/2025",
+        "end_date": "31/12/2026",
         "partitions": ["data"],
         "path_raw": f"{STORAGE_PATH}/raw/serie_433.json",
         "path_bronze": f"{STORAGE_PATH}/bronze/bcb/ipca/serie_433.parquet",
@@ -32,8 +31,8 @@ payload = {
     },
     "selic": {
         "COD_SELIC": 11,
-        "start_date": "01/01/2020",
-        "end_date": "31/12/2020",
+        "start_date": "01/01/2025",
+        "end_date": "31/12/2025",
         "partitions": ["data"],
         "path_raw": f"{STORAGE_PATH}/raw/serie_11.json",
         "path_bronze": f"{STORAGE_PATH}/bronze/bcb/selic/serie_11.parquet",
@@ -95,8 +94,7 @@ def main() -> None:
     manager = DataManager()
 
     jobs = {
-        # "donwloader":download_tax_series(payload=payload),
-        "raw":JobRawData(payload=payload),
+        "raw": JobRawData(payload=payload),
         "bronze": JobBronzeData(payload=payload, run=manager),
         "silver": JobSilverData(payload=payload, run=manager),
         "gold": JobGoldData(payload=payload),
@@ -104,22 +102,15 @@ def main() -> None:
     # if layer == "all":
     #     jobs["bronze"].run_all()
     #     jobs["silver"].run_all()
-    #     jobs["gold"].process_analytics()
-    #     return
+    #     jobs["gold"].create_datawarehouse()
+
     ##------[Ingestion]-----
-    # manager.download_tax_series(
-    #     code=payload["selic"]["COD_SELIC"],
-    #     start_date=payload["selic"]["start_date"],
-    #     end_date=payload["selic"]["end_date"],
-    # )
-    # manager.download_tax_series(
-    #     code=payload["ipca"]["COD_IPCA"],
-    #     start_date=payload["ipca"]["start_date"],
-    #     end_date=payload["ipca"]["end_date"],
-    # )
+    manager.download_tax_series(
+        payload=payload,
+        tax_name="ipca",
+    )
     # ------[Raw]-----
     # jobs['raw'].prepare_file_csv_inmet("inmet_franca")
-
     # ------[Bronze]-----
     # Executa todas as fontes
     # jobs['bronze'].run_all()
@@ -128,14 +119,14 @@ def main() -> None:
     # bronze.process_source("arabica")
     # bronze.process_source("selic")
 
-    #------[Silver]-----
+    # ------[Silver]-----
     # jobs['silver'].run_all()
     # jobs['silver'].process_data("inmet_patrocinio")
     # jobs['silver'].process_data("ipca")
     # jobs['silver'].process_data("robusta")
 
-    #------[Gold]-----
-    jobs['gold'].create_datawarehouse()
+    # ------[Gold]-----
+    # jobs['gold'].create_datawarehouse()
     logger.info("Pipeline finished successfully.")
 
 if __name__ == "__main__":

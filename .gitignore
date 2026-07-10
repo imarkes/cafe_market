@@ -15,6 +15,7 @@ storage/meta/*
 
 
 # Banco analítico gerado
+*.db
 *.duckdb
 *.duckdb.wal
 

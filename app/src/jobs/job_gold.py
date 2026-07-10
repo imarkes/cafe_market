@@ -11,11 +11,13 @@ class JobGoldData:
     def create_datawarehouse(self):
 
         TABLES = [
+            "dim_estacao.sql",
             "fact_preco_cafe.sql",
-            "fact_indicadores.sql",
             "fact_clima.sql",
+            "fact_indicadores.sql",
             "dim_calendario.sql",
-            "market_analysis.sql",
+            "market_analysis_daily.sql",
+            "market_analysis_monthly.sql",
         ]
         context = {
             source_name: source["path_silver"]

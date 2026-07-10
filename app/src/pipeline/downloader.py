@@ -6,17 +6,20 @@ from urllib.request import urlretrieve
 
 logger = logging.getLogger(__name__)
 
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+STORAGE_DIR = PROJECT_ROOT / "storage"
+RAW_DIR = STORAGE_DIR / "raw"
 
 class TaxDataDownloader:
     """Consome a API do Banco Central para baixar séries temporais de dados econômicos.
-        Séries a ingerir:
-        • SELIC — código 11 (taxa diária) ou 432 (meta Selic). Escolha e justifique.
-        • IPCA — código 433 (variação mensal).
+    Séries a ingerir:
+    • SELIC — código 11 (taxa diária) ou 432 (meta Selic). Escolha e justifique.
+    • IPCA — código 433 (variação mensal).
     """
 
     def __init__(self, output_dir: str | Path | None = None) -> None:
-        self.output_dir = Path(output_dir or "../storage/raw")
-        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.output_dir = Path(RAW_DIR or output_dir)
+        # self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def download(self, code: int, start_date: str, end_date: str) -> Path:
         url = (

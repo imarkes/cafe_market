@@ -3,34 +3,92 @@ CREATE OR REPLACE TABLE fact_indicadores AS
 WITH selic AS (
     SELECT
         data,
-        valor AS selic
-    FROM read_parquet('{selic}')
+        MAX(valor) AS selic_observada_pct
+    FROM read_parquet(
+        '{selic}',
+        union_by_name = true
+    )
+    WHERE data IS NOT NULL
+    GROUP BY data
 ),
 
-ipca_mensal AS (
+ipca AS (
     SELECT
-        data AS data_mes,
-        valor AS ipca,
-        date_trunc('month', data)::DATE AS primeiro_dia_mes,
-        last_day(data)::DATE AS ultimo_dia_mes
-    FROM read_parquet('{ipca}')
+        date_trunc('month', data)::DATE AS mes_referencia_ipca,
+        MAX(valor) AS ipca_mensal_pct
+    FROM read_parquet(
+        '{ipca}',
+        union_by_name = true
+    )
+    WHERE data IS NOT NULL
+    GROUP BY date_trunc('month', data)::DATE
 ),
 
-ipca_diario AS (
+datas AS (
+    SELECT data FROM selic
+
+    UNION ALL
+
+    SELECT mes_referencia_ipca
+    FROM ipca
+
+    UNION ALL
+
+    SELECT last_day(mes_referencia_ipca)
+    FROM ipca
+),
+
+limites AS (
     SELECT
-        d.data::DATE AS data,
-        i.ipca
-    FROM ipca_mensal i,
+        MIN(data) AS min_data,
+        MAX(data) AS max_data
+    FROM datas
+),
+
+calendario AS (
+    SELECT
+        d.data::DATE AS data
+    FROM limites,
     generate_series(
-        i.primeiro_dia_mes,
-        i.ultimo_dia_mes,
+        min_data,
+        max_data,
         INTERVAL 1 DAY
     ) AS d(data)
+),
+
+base AS (
+    SELECT
+        c.data,
+        s.selic_observada_pct,
+        i.ipca_mensal_pct,
+        i.mes_referencia_ipca
+    FROM calendario c
+
+    LEFT JOIN selic s
+        ON c.data = s.data
+
+    LEFT JOIN ipca i
+        ON date_trunc('month', c.data)::DATE =
+           i.mes_referencia_ipca
 )
 
 SELECT
-    COALESCE(s.data, i.data) AS data,
-    s.selic,
-    i.ipca
-FROM selic s
-FULL JOIN ipca_diario i USING (data);
+    CAST(strftime(data, '%Y%m%d') AS INTEGER) AS data_key,
+    data,
+
+    selic_observada_pct,
+
+    LAST_VALUE(
+        selic_observada_pct IGNORE NULLS
+    ) OVER (
+        ORDER BY data
+        ROWS BETWEEN UNBOUNDED PRECEDING
+        AND CURRENT ROW
+    ) AS selic_ultimo_valor_pct,
+
+    ipca_mensal_pct,
+    mes_referencia_ipca,
+
+    selic_observada_pct IS NOT NULL AS flag_selic_observada_dia
+
+FROM base;

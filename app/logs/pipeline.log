@@ -230,3 +230,89 @@
 2026-07-09 23:24:55,857 | INFO | app.src.jobs.job_gold | Creating table: market_analysis.sql
 2026-07-09 23:24:55,936 | INFO | app.src.run | Pipeline finished successfully.
 2026-07-09 23:24:55,937 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:01:36,391 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:01:36,391 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:01:43,650 | INFO | app.src.jobs.job_gold | Creating table: dim_estacao.sql
+2026-07-10 00:01:43,941 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-10 00:01:45,691 | INFO | app.src.jobs.job_gold | Creating table: fact_clima.sql
+2026-07-10 00:01:45,919 | INFO | app.src.jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-10 00:01:45,976 | INFO | app.src.jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-10 00:01:46,025 | INFO | app.src.jobs.job_gold | Creating table: cafe_market_analysis_daily.sql
+2026-07-10 00:01:46,025 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:02:17,147 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:02:17,148 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:02:24,669 | INFO | app.src.jobs.job_gold | Creating table: dim_estacao.sql
+2026-07-10 00:02:24,964 | INFO | app.src.jobs.job_gold | Creating table: fact_preco_cafe.sql
+2026-07-10 00:02:26,822 | INFO | app.src.jobs.job_gold | Creating table: fact_clima.sql
+2026-07-10 00:02:27,076 | INFO | app.src.jobs.job_gold | Creating table: fact_indicadores.sql
+2026-07-10 00:02:27,144 | INFO | app.src.jobs.job_gold | Creating table: dim_calendario.sql
+2026-07-10 00:02:27,196 | INFO | app.src.jobs.job_gold | Creating table: market_analysis_daily.sql
+2026-07-10 00:02:27,295 | INFO | app.src.jobs.job_gold | Creating table: market_analysis_monthly.sql
+2026-07-10 00:02:27,348 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:02:27,348 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:15:20,484 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:15:20,484 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:15:28,192 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:16:21,958 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:16:21,959 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:16:29,464 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:16:49,753 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:16:49,753 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:16:57,801 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:16:57,801 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433.json
+2026-07-10 00:16:58,541 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: ../storage/raw/serie_433.json
+2026-07-10 00:16:58,542 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:16:58,542 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:19:33,375 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:19:33,375 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:19:41,384 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:19:41,385 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433_01/01/2025_31/12/2026.json
+2026-07-10 00:20:57,622 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:20:57,622 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:21:05,428 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:21:05,428 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433.json
+2026-07-10 00:21:05,875 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: ../storage/raw/serie_433.json
+2026-07-10 00:21:05,876 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:21:05,876 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:21:28,232 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:21:28,232 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:21:35,856 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:21:35,857 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433.json
+2026-07-10 00:21:36,306 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: ../storage/raw/serie_433.json
+2026-07-10 00:21:36,307 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:21:36,307 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:23:17,463 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:23:17,463 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:23:25,176 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:23:25,176 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433.json
+2026-07-10 00:23:25,703 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: ../storage/raw/serie_433.json
+2026-07-10 00:23:25,704 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:23:25,704 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:25:20,406 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:25:20,406 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:25:28,125 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:25:28,125 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433.json
+2026-07-10 00:25:28,584 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: ../storage/raw/serie_433.json
+2026-07-10 00:25:28,584 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:25:28,585 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:27:09,812 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:27:09,812 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:27:17,648 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:27:17,648 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433.json
+2026-07-10 00:27:18,077 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: ../storage/raw/serie_433.json
+2026-07-10 00:27:18,077 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:27:18,078 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:28:05,220 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:28:05,220 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:28:12,707 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:28:12,708 | INFO | app.src.pipeline.downloader | Downloading series 433 to ../storage/raw/serie_433.json
+2026-07-10 00:28:13,223 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: ../storage/raw/serie_433.json
+2026-07-10 00:28:13,223 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:28:13,224 | INFO | py4j.clientserver | Closing down clientserver connection
+2026-07-10 00:29:03,942 | INFO | app.src.run | Starting pipeline...
+2026-07-10 00:29:03,942 | INFO | app.src.utils.spark_session | Creating Spark session
+2026-07-10 00:29:11,287 | INFO | app.src.pipeline.manager | Downloading BCB series 'ipca', code 433, from 01/01/2025 to 31/12/2026.
+2026-07-10 00:29:11,287 | INFO | app.src.pipeline.downloader | Downloading series 433 to /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-10 00:29:11,728 | INFO | app.src.pipeline.manager | BCB series 'ipca' successfully saved at: /home/ivan/Documentos/Labs/Culltivo/storage/raw/serie_433.json
+2026-07-10 00:29:11,728 | INFO | app.src.run | Pipeline finished successfully.
+2026-07-10 00:29:11,729 | INFO | py4j.clientserver | Closing down clientserver connection
